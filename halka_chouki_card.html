@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>अपराधी सत्यापन - थाना चरखारी</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f1f3d;--blue:#1a3a6b;--accent:#d4a017;--accent-light:#f5e6b0;
+  --red:#c0392b;--red-light:#fdecea;--green:#1a7a4a;--green-light:#e8f5ee;
+  --orange:#c0620a;--orange-light:#fef3e2;--grey:#f4f6f9;--border:#dde3ee;
+  --text:#1a2235;--muted:#6b7a99;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(160deg,#0a1628 0%,#1a2f55 60%,#0d1e3d 100%);min-height:100vh;color:var(--text);padding:0 0 40px}
+
+/* ── HEADER ── */
+.top-bar{background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.top-bar-left{display:flex;align-items:center;gap:10px}
+.top-emblem{width:38px;height:38px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.top-title{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;color:#fff;font-weight:700;line-height:1.3}
+.top-sub{font-size:10px;color:rgba(255,255,255,.55);margin-top:1px}
+.admin-btn{background:var(--accent);color:#2b1a00;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.admin-btn:active{opacity:.8}
+
+/* ── DATE STRIP ── */
+.date-strip{text-align:center;padding:10px 16px 0}
+.date-pill{display:inline-block;background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.35);color:var(--accent);padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600}
+
+/* ── SUMMARY CARDS ── */
+.summary-wrap{padding:14px 12px}
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:600px;margin:0 auto}
+.scard{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 12px;text-align:center}
+.scard .sc-icon{font-size:20px;margin-bottom:4px}
+.scard .sc-num{font-size:26px;font-weight:700;color:#fff;line-height:1.1}
+.scard .sc-label{font-family:'Tiro Devanagari Hindi',serif;font-size:11px;color:rgba(255,255,255,.55);margin-top:3px}
+.scard.green .sc-num{color:#6ee6a0}
+.scard.red   .sc-num{color:#ff8080}
+.scard.gold  .sc-num{color:var(--accent)}
+
+/* ── TABS ── */
+.tabs-wrap{padding:0 12px;max-width:700px;margin:0 auto}
+.tabs{display:flex;background:rgba(255,255,255,.07);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+.tab-btn{flex:1;padding:10px 6px;background:none;border:none;color:rgba(255,255,255,.55);font-family:'Tiro Devanagari Hindi',serif;font-size:13px;cursor:pointer;transition:all .2s;border-radius:0}
+.tab-btn.active{background:#fff;color:var(--navy);font-weight:700}
+
+/* ── MAIN PANEL ── */
+.panel-wrap{padding:12px;max-width:700px;margin:0 auto}
+.main-panel{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* ── HALKA SECTIONS ── */
+.halka-sec{border-bottom:1px solid var(--border)}
+.halka-sec:last-child{border-bottom:none}
+.halka-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;background:linear-gradient(90deg,var(--navy),var(--blue));user-select:none}
+.halka-hdr .hh-name{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;color:#fff;font-weight:700}
+.halka-hdr .hh-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.bdg{padding:2px 8px;border-radius:12px;font-size:10.5px;font-weight:600}
+.bdg-total{background:rgba(255,255,255,.18);color:#fff}
+.bdg-ok{background:#6ee6a0;color:#0a3d22}
+.bdg-pend{background:#ff8080;color:#5c0000}
+.bdg-pct{background:var(--accent);color:#3b2800}
+.hh-arrow{color:rgba(255,255,255,.6);font-size:14px;transition:transform .25s;flex-shrink:0;margin-left:6px}
+.halka-hdr.open .hh-arrow{transform:rotate(180deg)}
+.halka-body{overflow:hidden;transition:max-height .3s ease}
+
+/* ── BEAT CARDS (mobile) ── */
+.beat-list{padding:8px 10px}
+.beat-card{border-radius:10px;padding:10px 12px;margin-bottom:7px;border:1.5px solid transparent}
+.beat-card.done{background:var(--green-light);border-color:#b8dfc8}
+.beat-card.pend{background:var(--orange-light);border-color:#f0c898}
+.beat-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px}
+.beat-card-left .bc-halka{font-family:'Tiro Devanagari Hindi',serif;font-size:12px;font-weight:700;color:var(--navy)}
+.beat-card-left .bc-beat{font-size:11px;color:var(--muted);margin-top:1px}
+.beat-card-left .bc-officer{font-size:11px;color:var(--muted)}
+.beat-card-right{text-align:right;flex-shrink:0;margin-left:8px}
+.bc-status-done{color:var(--green);font-size:20px}
+.bc-status-pend{color:var(--red);font-size:13px;font-weight:800}
+.bc-pct{font-size:11px;color:var(--muted);margin-top:2px}
+.beat-card-bar-wrap{height:4px;background:rgba(0,0,0,.1);border-radius:4px;margin-bottom:5px}
+.beat-card-bar{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--green),#6ee6a0)}
+.beat-card-nums{display:flex;gap:12px;font-size:11px}
+.bc-total{color:var(--navy);font-weight:600}
+.bc-verified{color:var(--green);font-weight:600}
+.bc-pending{color:var(--red);font-weight:700}
+.bc-villages{font-size:10px;color:#999;margin-top:4px;font-style:italic;line-height:1.3}
+
+/* EDIT inputs on beat card */
+.edit-inputs{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)}
+.edit-mode .edit-inputs{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.edit-field{display:flex;flex-direction:column;gap:3px}
+.edit-field label{font-size:10px;font-weight:600;color:var(--muted)}
+.edit-inp{width:70px;padding:5px 8px;border:2px solid var(--accent);border-radius:7px;font-size:13px;font-weight:700;text-align:center;background:#fffde7;color:var(--navy);outline:none;font-family:'DM Sans',sans-serif}
+.edit-inp:focus{border-color:var(--blue);background:#e8f0fe}
+
+/* ── SUBTOTAL ROW ── */
+.subtotal-row{background:var(--accent-light);border-top:2px solid var(--accent);padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:var(--navy)}
+
+/* ── GRAND TOTAL ── */
+.grand-total{background:var(--navy);margin:0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.gt-label{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;color:#fff;font-weight:700}
+.gt-nums{display:flex;gap:14px;align-items:center}
+.gt-item{text-align:center}
+.gt-item .gn{font-size:18px;font-weight:800}
+.gt-item .gl{font-size:10px;color:rgba(255,255,255,.5);margin-top:1px}
+
+/* ── PENDING TAB ── */
+.pending-hdr{padding:14px 14px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.pending-hdr h2{font-family:'Tiro Devanagari Hindi',serif;font-size:15px;color:var(--navy)}
+.pend-badge{background:var(--red);color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
+.priority-sec{padding:10px 12px 0}
+.priority-sec:last-child{padding-bottom:12px}
+.priority-lbl{display:flex;align-items:center;gap:7px;font-family:'Tiro Devanagari Hindi',serif;font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;margin-bottom:8px}
+.priority-lbl.high{background:var(--red-light);color:var(--red)}
+.priority-lbl.med{background:#fff8e1;color:#9a5c00}
+.priority-lbl.low{background:var(--green-light);color:var(--green)}
+.no-pending{text-align:center;padding:40px 20px;color:var(--muted);font-family:'Tiro Devanagari Hindi',serif;font-size:14px}
+.pend-cards{display:flex;flex-direction:column;gap:8px}
+.pcard{border-radius:12px;padding:12px 14px;border:1.5px solid transparent}
+.pcard.high{background:var(--red-light);border-color:#e8a0a0}
+.pcard.med{background:#fff8e1;border-color:#e0c870}
+.pcard.low{background:var(--green-light);border-color:#a0d8b8}
+.pcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.pcard-beat{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;font-weight:700;color:var(--navy)}
+.pcard-beatnum{font-size:10px;color:var(--muted);margin-top:1px}
+.pcard-big{font-size:30px;font-weight:800;line-height:1}
+.pcard.high .pcard-big{color:var(--red)}.pcard.med .pcard-big{color:#9a5c00}.pcard.low .pcard-big{color:var(--green)}
+.pcard-officer{font-size:11px;color:var(--muted);margin-bottom:7px}
+.pcard-bar-wrap{background:rgba(0,0,0,.08);border-radius:4px;height:5px;margin-bottom:5px}
+.pcard-bar{height:5px;border-radius:4px;background:linear-gradient(90deg,var(--green),#a0e0b0)}
+.pcard-stats{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted)}
+.pcard-villages{font-size:10px;color:#999;margin-top:4px;font-style:italic}
+
+/* ── FOOTER ── */
+.panel-footer{text-align:center;padding:12px;background:var(--navy);color:rgba(255,255,255,.4);font-size:10px;border-radius:0 0 16px 16px}
+
+/* ══ OVERLAYS ══ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.show{opacity:1;pointer-events:all}
+.modal-box{background:#fff;border-radius:22px 22px 0 0;padding:24px 20px 32px;width:100%;max-width:480px;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);max-height:92vh;overflow-y:auto}
+.overlay.show .modal-box{transform:translateY(0)}
+.modal-drag{width:40px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 18px}
+.modal-icon{font-size:38px;display:block;text-align:center;margin-bottom:10px}
+.modal-title{font-family:'Tiro Devanagari Hindi',serif;font-size:18px;font-weight:700;color:var(--navy);text-align:center;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.5}
+.field-label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+.field-wrap{position:relative;margin-bottom:14px}
+.field-input{width:100%;padding:12px 42px 12px 14px;border:2px solid var(--border);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:none;transition:border .2s;background:#fafafa}
+.field-input:focus{border-color:var(--accent);background:#fff}
+.field-input.wrong{border-color:var(--red);animation:shake .3s}
+.field-select{width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:none;background:#fafafa;margin-bottom:14px}
+.field-select:focus{border-color:var(--accent)}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);padding:4px}
+.modal-btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s;margin-top:4px}
+.btn-primary{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff}
+.btn-success{background:var(--green);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn-link{width:100%;background:none;border:none;color:var(--blue);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:12px;text-decoration:underline;padding:6px}
+.btn-cancel{width:100%;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;padding:6px}
+.err-msg{color:var(--red);font-size:12px;min-height:16px;margin-bottom:8px;font-weight:600}
+.att-msg{font-size:11px;color:var(--muted);text-align:right;margin-bottom:6px}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.sec-note{background:#f0f7ff;border:1px solid #b8d4f0;border-radius:8px;padding:10px 12px;font-size:11.5px;color:#1a3a6b;margin-bottom:14px;line-height:1.5}
+.warn-box{background:var(--red-light);border:1px solid #f5c6c6;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--red);margin-bottom:16px;line-height:1.6}
+
+/* ADMIN PANEL */
+.admin-stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+.as-box{background:var(--grey);border-radius:10px;padding:12px;text-align:center}
+.as-num{font-size:22px;font-weight:800;color:var(--navy)}
+.as-lbl{font-size:10px;color:var(--muted);font-family:'Tiro Devanagari Hindi',serif;margin-top:2px}
+.admin-sec-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.admin-act-btn{width:100%;padding:13px 14px;border-radius:10px;border:2px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:9px;color:var(--navy);transition:all .18s;text-align:left}
+.admin-act-btn:active{opacity:.8}
+.admin-act-btn.danger{border-color:#f5c6c6}
+.admin-act-btn.danger:active{background:var(--red-light)}
+.admin-logout{width:100%;padding:12px;border-radius:10px;background:var(--red-light);border:2px solid #f5c6c6;color:var(--red);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px}
+.pw-strength{height:4px;border-radius:4px;background:var(--border);margin:-10px 0 14px;transition:all .3s;width:0}
+
+/* EDIT MODE INDICATOR */
+.edit-mode-bar{display:none;background:var(--orange);color:#fff;text-align:center;padding:8px;font-size:12px;font-weight:700;font-family:'Tiro Devanagari Hindi',serif}
+.edit-mode-bar.show{display:block}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a7a4a;color:#fff;padding:11px 22px;border-radius:20px;font-weight:600;font-size:13px;box-shadow:0 6px 24px rgba(0,0,0,.3);z-index:9999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.tsuccess{background:#1a7a4a}.toast.terror{background:#c0392b}.toast.tinfo{background:var(--blue)}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <div class="top-emblem">🛡️</div>
+    <div>
+      <div class="top-title">थाना चरखारी, महोबा</div>
+      <div class="top-sub">अपराधी सत्यापन विवरण</div>
+    </div>
+  </div>
+  <button class="admin-btn" onclick="openAdminLogin()">⚙️ Admin</button>
+</div>
+
+<!-- EDIT MODE BAR -->
+<div class="edit-mode-bar" id="editModeBar">✏️ संपादन मोड चालू — सत्यापित संख्या बदलें, फिर Admin → सहेजें</div>
+
+<!-- DATE -->
+<div class="date-strip">
+  <span class="date-pill" id="headerDate">📅 04-03-2026 | 02:50 PM</span>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-wrap">
+  <div class="summary-grid">
+    <div class="scard"><div class="sc-icon">👤</div><div class="sc-num" id="s-total">679</div><div class="sc-label">कुल अपराधी</div></div>
+    <div class="scard green"><div class="sc-icon">✅</div><div class="sc-num" id="s-verified">645</div><div class="sc-label">सत्यापित</div></div>
+    <div class="scard red"><div class="sc-icon">⚠️</div><div class="sc-num" id="s-pending">34</div><div class="sc-label">सत्यापन शेष</div></div>
+    <div class="scard gold"><div class="sc-icon">📊</div><div class="sc-num" id="s-pct">94.99%</div><div class="sc-label">सत्यापन प्रतिशत</div></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap" style="margin-bottom:10px">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('halka',this)">🗂️ हल्का-चौकी</button>
+    <button class="tab-btn" onclick="switchTab('pending',this)">⚠️ पेंडिंग</button>
+  </div>
+</div>
+
+<!-- MAIN PANEL -->
+<div class="panel-wrap">
+  <div class="main-panel" id="mainPanel">
+
+    <!-- HALKA TAB -->
+    <div id="tab-halka" class="tab-panel active">
+      <div id="halkaContainer"></div>
+      <div class="grand-total">
+        <div class="gt-label">🏛️ थाना कुल योग</div>
+        <div class="gt-nums">
+          <div class="gt-item"><div class="gn" id="gt-total" style="color:#fff">679</div><div class="gl">कुल</div></div>
+          <div class="gt-item"><div class="gn" id="gt-verified" style="color:#6ee6a0">645</div><div class="gl">सत्यापित</div></div>
+          <div class="gt-item"><div class="gn" id="gt-pending" style="color:#ff8080">34</div><div class="gl">शेष</div></div>
+          <div class="gt-item"><div class="gn" id="gt-pct" style="color:var(--accent)">94.99%</div><div class="gl">प्रतिशत</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENDING TAB -->
+    <div id="tab-pending" class="tab-panel">
+      <div class="pending-hdr">
+        <h2>⚠️ पेंडिंग सत्यापन</h2>
+        <span class="pend-badge" id="pendBadge">34 शेष</span>
+      </div>
+      <div id="pendingContainer"></div>
+    </div>
+
+    <div class="panel-footer">थाना चरखारी, जनपद महोबा | Beat Verification | 04-03-2026</div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDIT LOGIN ══ -->
+<div class="overlay" id="editPwOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🔒</span>
+    <div class="modal-title">संपादन हेतु लॉगिन</div>
+    <div class="modal-sub">डेटा बदलने के लिए पासवर्ड दर्ज करें</div>
+    <label class="field-label">पासवर्ड</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="editPwIn" placeholder="••••••" onkeydown="if(event.key==='Enter')checkEditPw()">
+      <button class="eye-btn" onclick="toggleEye('editPwIn',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="editPwErr"></div>
+    <div class="att-msg" id="editPwAtt"></div>
+    <button class="modal-btn btn-primary" onclick="checkEditPw()">✅ प्रवेश करें</button>
+    <button class="btn-link" onclick="closeOv('editPwOv');openForgot()">पासवर्ड भूल गए?</button>
+    <button class="btn-cancel" onclick="closeOv('editPwOv')">रद्द करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADMIN LOGIN ══ -->
+<div class="overlay" id="adminLoginOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">⚙️</span>
+    <div class="modal-title">Admin Panel</div>
+    <div class="modal-sub">एडमिन पैनल खोलने के लिए पासवर्ड दर्ज करें</div>
+    <label class="field-label">पासवर्ड</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="adminPwIn" placeholder="••••••" onkeydown="if(event.key==='Enter')checkAdminPw()">
+      <button class="eye-btn" onclick="toggleEye('adminPwIn',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="adminPwErr"></div>
+    <div class="att-msg" id="adminPwAtt"></div>
+    <button class="modal-btn btn-primary" onclick="checkAdminPw()">⚙️ Admin Panel खोलें</button>
+    <button class="btn-link" onclick="closeOv('adminLoginOv');openForgot()">पासवर्ड भूल गए?</button>
+    <button class="btn-cancel" onclick="closeOv('adminLoginOv')">रद्द करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADMIN PANEL ══ -->
+<div class="overlay" id="adminPanelOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div>
+        <div style="font-family:'Tiro Devanagari Hindi',serif;font-size:18px;font-weight:700;color:var(--navy)">⚙️ Admin Panel</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">थाना चरखारी — सुरक्षा सेटिंग्स</div>
+      </div>
+      <span style="background:var(--green-light);color:var(--green);padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">🔓 Logged In</span>
+    </div>
+    <div class="admin-stats-grid" id="adminStats"></div>
+    <hr class="divider">
+    <div class="admin-sec-title">✏️ डेटा संपादन</div>
+    <button class="admin-act-btn" id="adminEditBtn" onclick="toggleEditFromAdmin()">✏️ संपादन मोड चालू करें</button>
+    <button class="admin-act-btn" id="adminSaveBtn" onclick="saveFromAdmin()" style="display:none">💾 डेटा सहेजें</button>
+    <hr class="divider">
+    <div class="admin-sec-title">🔑 पासवर्ड प्रबंधन</div>
+    <button class="admin-act-btn" onclick="closeOv('adminPanelOv');openChangePw()">🔄 पासवर्ड बदलें</button>
+    <button class="admin-act-btn" onclick="closeOv('adminPanelOv');openSetSecurity()">🛡️ सुरक्षा प्रश्न बदलें</button>
+    <hr class="divider">
+    <div class="admin-sec-title">📊 डेटा प्रबंधन</div>
+    <button class="admin-act-btn danger" onclick="closeOv('adminPanelOv');openResetConfirm()">🗑️ सभी डेटा रीसेट करें</button>
+    <button class="admin-logout" onclick="closeOv('adminPanelOv');showToast('✅ Admin logout हो गया','tsuccess')">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: CHANGE PASSWORD ══ -->
+<div class="overlay" id="changePwOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🔄</span>
+    <div class="modal-title">पासवर्ड बदलें</div>
+    <div class="modal-sub">नया पासवर्ड कम से कम 4 अक्षर का होना चाहिए</div>
+    <label class="field-label">वर्तमान पासवर्ड</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="cpCurrent" placeholder="••••••">
+      <button class="eye-btn" onclick="toggleEye('cpCurrent',this)">👁️</button>
+    </div>
+    <label class="field-label">नया पासवर्ड</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="cpNew" placeholder="••••••" oninput="strengthBar('cpNew','pwStr1')">
+      <button class="eye-btn" onclick="toggleEye('cpNew',this)">👁️</button>
+    </div>
+    <div class="pw-strength" id="pwStr1"></div>
+    <label class="field-label">नया पासवर्ड दोबारा</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="cpConfirm" placeholder="••••••">
+      <button class="eye-btn" onclick="toggleEye('cpConfirm',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="cpErr"></div>
+    <button class="modal-btn btn-success" onclick="doChangePw()">💾 पासवर्ड सहेजें</button>
+    <button class="btn-cancel" onclick="closeOv('changePwOv');openAdminPanel()">← वापस</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: SET SECURITY ══ -->
+<div class="overlay" id="setSecOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🛡️</span>
+    <div class="modal-title">सुरक्षा प्रश्न सेट करें</div>
+    <div class="sec-note">🔐 आपके उत्तर तुरंत SHA-256 encrypt होंगे — कोई नहीं पढ़ सकता।</div>
+    <label class="field-label">प्रश्न 1</label>
+    <select class="field-select" id="sq1Sel" onchange="document.getElementById('sq1CustWrap').style.display=this.value==='custom'?'block':'none'">
+      <option value="dob">जन्म तिथि (DD/MM/YYYY)</option>
+      <option value="phone">मोबाइल नंबर</option>
+      <option value="mother">माता का नाम</option>
+      <option value="custom">अपना प्रश्न लिखें...</option>
+    </select>
+    <div id="sq1CustWrap" style="display:none;margin-bottom:14px">
+      <input class="field-input" type="text" id="sq1Cust" placeholder="प्रश्न यहाँ लिखें" style="margin:0">
+    </div>
+    <label class="field-label">प्रश्न 1 का उत्तर</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="sq1Ans" placeholder="उत्तर">
+      <button class="eye-btn" onclick="toggleEye('sq1Ans',this)">👁️</button>
+    </div>
+    <hr class="divider">
+    <label class="field-label">प्रश्न 2</label>
+    <select class="field-select" id="sq2Sel" onchange="document.getElementById('sq2CustWrap').style.display=this.value==='custom'?'block':'none'">
+      <option value="phone">मोबाइल नंबर</option>
+      <option value="dob">जन्म तिथि (DD/MM/YYYY)</option>
+      <option value="mother">माता का नाम</option>
+      <option value="custom">अपना प्रश्न लिखें...</option>
+    </select>
+    <div id="sq2CustWrap" style="display:none;margin-bottom:14px">
+      <input class="field-input" type="text" id="sq2Cust" placeholder="प्रश्न यहाँ लिखें" style="margin:0">
+    </div>
+    <label class="field-label">प्रश्न 2 का उत्तर</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="sq2Ans" placeholder="उत्तर">
+      <button class="eye-btn" onclick="toggleEye('sq2Ans',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="sqErr"></div>
+    <button class="modal-btn btn-success" onclick="doSetSecurity()">🔐 सहेजें (Encrypted)</button>
+    <button class="btn-cancel" onclick="closeOv('setSecOv');openAdminPanel()">← वापस</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: FORGOT PASSWORD ══ -->
+<div class="overlay" id="forgotOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🔑</span>
+    <div class="modal-title">पासवर्ड रीसेट</div>
+    <div class="modal-sub">अपने सुरक्षा प्रश्नों के उत्तर दें</div>
+    <label class="field-label" id="fq1Label">प्रश्न 1</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="fa1" placeholder="उत्तर">
+      <button class="eye-btn" onclick="toggleEye('fa1',this)">👁️</button>
+    </div>
+    <label class="field-label" id="fq2Label">प्रश्न 2</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="fa2" placeholder="उत्तर">
+      <button class="eye-btn" onclick="toggleEye('fa2',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="forgotErr"></div>
+    <button class="modal-btn btn-primary" onclick="checkForgot()">✅ उत्तर जमा करें</button>
+    <button class="btn-cancel" onclick="closeOv('forgotOv')">रद्द करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: NEW PASSWORD (after forgot) ══ -->
+<div class="overlay" id="newPwOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">✅</span>
+    <div class="modal-title">नया पासवर्ड सेट करें</div>
+    <div class="modal-sub">पहचान सत्यापित। अब नया पासवर्ड बनाएं।</div>
+    <label class="field-label">नया पासवर्ड</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="npNew" placeholder="••••••" oninput="strengthBar('npNew','pwStr2')">
+      <button class="eye-btn" onclick="toggleEye('npNew',this)">👁️</button>
+    </div>
+    <div class="pw-strength" id="pwStr2"></div>
+    <label class="field-label">दोबारा दर्ज करें</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="npConfirm" placeholder="••••••">
+      <button class="eye-btn" onclick="toggleEye('npConfirm',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="npErr"></div>
+    <button class="modal-btn btn-success" onclick="doResetPw()">💾 पासवर्ड सेट करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: RESET CONFIRM ══ -->
+<div class="overlay" id="resetConfOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">⚠️</span>
+    <div class="modal-title" style="color:var(--red)">डेटा रीसेट की पुष्टि</div>
+    <div class="warn-box">🚨 <strong>चेतावनी:</strong> सभी beat की सत्यापन संख्या मूल स्थिति में वापस हो जाएगी। यह क्रिया पूर्ववत नहीं होगी।</div>
+    <label class="field-label">पुष्टि के लिए पासवर्ड दर्ज करें</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="resetPwIn" placeholder="••••••" onkeydown="if(event.key==='Enter')doReset()">
+      <button class="eye-btn" onclick="toggleEye('resetPwIn',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="resetPwErr"></div>
+    <button class="modal-btn btn-danger" onclick="doReset()">🗑️ हाँ, रीसेट करें</button>
+    <button class="btn-cancel" onclick="closeOv('resetConfOv');openAdminPanel()">← वापस</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ SECURITY HASHES (SHA-256) ══
+const DEFAULTS = {
+  pwHash:'8f1d857513c617aa479c66f399c8b9c509d7c76aba96a82fc4f2b96b807605c3',
+  sq1Hash:'3158bb379370838573def220138b1721033abfd6c362ca17d9ccfaf239b4e466',
+  sq1Label:'जन्म तिथि (DD/MM/YYYY)',
+  sq2Hash:'caa7d7bd022266e8cb0ab9fb514fd71fcf2473b323d6cb37ea54972d49b3ab51',
+  sq2Label:'मोबाइल नंबर',
+};
+
+async function sha256(s){
+  const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function getCfg(){try{const s=localStorage.getItem('sc_v3');return s?JSON.parse(s):{...DEFAULTS};}catch(e){return{...DEFAULTS};}}
+function saveCfg(c){localStorage.setItem('sc_v3',JSON.stringify(c));}
+
+// ══ BEAT DATA ══
+const ORIG=[
+  {halka:'हल्का प्रथम',beat:1,officer:'DINESH SINGH',total:26,verified:26,villages:'Asthon, Bamhauri beldaran'},
+  {halka:'हल्का प्रथम',beat:2,officer:'PANKAJ KUMAR',total:27,verified:27,villages:'Chhedimau, Lohari, Gorkha'},
+  {halka:'हल्का प्रथम',beat:3,officer:'SANDEEP KUMAR',total:9,verified:9,villages:'Rampura kadeem, Akthauha'},
+  {halka:'हल्का द्वितीय',beat:4,officer:'DEEPENDRA SINGH YADAV',total:10,verified:10,villages:'Sudamapuri, Kanera, Chhanikhurd'},
+  {halka:'हल्का द्वितीय',beat:5,officer:'MAHESH PRASHAD',total:4,verified:4,villages:'Bamhauri khurd, Ujnedi, Santoshpura'},
+  {halka:'हल्का द्वितीय',beat:6,officer:'Shyam Kishor',total:26,verified:26,villages:'Anghaura, Ghutvai, Kusarma, Sabua'},
+  {halka:'हल्का तृतीय',beat:7,officer:'AJAY YADAV',total:29,verified:29,villages:'Imlikheda, Sohajna, Bamhauri mathiyai, Bamhauri kalan'},
+  {halka:'हल्का तृतीय',beat:8,officer:'SHYAMU KUMAR',total:28,verified:25,villages:'Bamnetha, Nausara, Bamrara, Roshanpura'},
+  {halka:'हल्का चतुर्थ',beat:9,officer:'NANDLAL SINGH',total:10,verified:10,villages:'Imiliyadang, Satpurwa'},
+  {halka:'हल्का चतुर्थ',beat:10,officer:'NANDLAL SINGH',total:8,verified:8,villages:'Maharajpura, Brajpur, Kumharan dera, Gopalpura'},
+  {halka:'हल्का चतुर्थ',beat:11,officer:'NISHANT KUMAR PATEL',total:33,verified:33,villages:'Bagraun, Kachhiyanpura, Kurauradang, Majhaul, Dyalpura'},
+  {halka:'हल्का चतुर्थ',beat:12,officer:'NISHANT KUMAR PATEL',total:6,verified:6,villages:'Bhaisai, Fatehpur'},
+  {halka:'कस्बा चौकी',beat:13,officer:'PRAMOD KUMAR',total:19,verified:17,villages:'Hathikhana, Bhairoganj, Sadar bajar, Basudev'},
+  {halka:'कस्बा चौकी',beat:14,officer:'ASHISH KUMAR',total:28,verified:27,villages:'Najarbag, Bajariya, Chhailbihari, Rajmandir, Dhanushdhari, Hatwara, Navada, Bhainsasur'},
+  {halka:'कस्बा चौकी',beat:15,officer:'VIVEK / RAJESH KUMAR SINGH',total:25,verified:25,villages:'Amargang, Ghusiyana, Tilwapura, Turkiyana, Kajiyana'},
+  {halka:'कस्बा चौकी',beat:16,officer:'HARISHANKAR MISHRA',total:34,verified:34,villages:'Khandiya, Sauharyanv, Navranga, Lithaura, Roopnagar, Mitlainganj, Jordanganj, Ramnagar'},
+  {halka:'कस्बा चौकी',beat:17,officer:'NARENDRA BABU / DEVISHARAN',total:17,verified:17,villages:'Madvasan, Nayapura, Ravbag, Pathvapura, Mahaveer nagar, Kashiram colony'},
+  {halka:'कस्बा चौकी',beat:18,officer:'LOKENDRA PRATAP / MAHENDRA KUMAR',total:16,verified:16,villages:'Shekhanfatak, Rayanpur, Jyendra nagar, Chintepura, Chhota ramna'},
+  {halka:'चौकी सूपा',beat:19,officer:'RAJARAM PAL',total:63,verified:57,villages:'Supa, Supa khude'},
+  {halka:'चौकी सूपा',beat:20,officer:'RAJARAM PAL',total:16,verified:0,villages:'Tolasoyam, Balchaur'},
+  {halka:'चौकी सूपा',beat:21,officer:'BRAJENDRA SINGH',total:3,verified:3,villages:'Naredi'},
+  {halka:'चौकी सूपा',beat:22,officer:'BRAJENDRA SINGH',total:21,verified:19,villages:'Swasamaaf, Salat, Tapariya'},
+  {halka:'चौकी गौरहारी',beat:23,officer:'RAJIV KUMAR',total:42,verified:42,villages:'Gaurhari'},
+  {halka:'चौकी गौरहारी',beat:24,officer:'RAJIV KUMAR',total:10,verified:10,villages:'Karahra khurd'},
+  {halka:'चौकी गौरहारी',beat:25,officer:'BRIJLAL AHIRWAR',total:22,verified:22,villages:'Baphretha'},
+  {halka:'चौकी गौरहारी',beat:26,officer:'BRIJLAL AHIRWAR',total:1,verified:1,villages:'Dhanavan'},
+  {halka:'चौकी गौरहारी',beat:27,officer:'GYAN SINGH',total:50,verified:48,villages:'Gudha'},
+  {halka:'चौकी गौरहारी',beat:28,officer:'GYAN SINGH',total:14,verified:14,villages:'Bhatevra kalan'},
+  {halka:'चौकी रिवई',beat:29,officer:'DAYARAM KUSHWAHA',total:43,verified:41,villages:'Rewai'},
+  {halka:'चौकी रिवई',beat:30,officer:'DAYARAM KUSHWAHA',total:20,verified:20,villages:'Keeratpura, Kakun, Natarra'},
+  {halka:'चौकी रिवई',beat:31,officer:'RAJKUMAR YADAV',total:1,verified:1,villages:'Panchampura, Jataura'},
+  {halka:'चौकी रिवई',beat:32,officer:'RAHUL YADAV',total:18,verified:18,villages:'Rihuniya, Baihari, Sijaura'},
+];
+
+let data=[], editMode=false, editAtt=0, adminAtt=0;
+const MAX_ATT=5;
+
+function loadData(){
+  try{const s=localStorage.getItem('bd_v3');data=s?JSON.parse(s):ORIG.map(d=>({...d}));}
+  catch(e){data=ORIG.map(d=>({...d}));}
+}
+function saveData(){
+  localStorage.setItem('bd_v3',JSON.stringify(data));
+  const ts=new Date().toLocaleDateString('en-IN')+' '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  localStorage.setItem('bd_ts',ts);
+  document.getElementById('headerDate').textContent='📅 04-03-2026 | 💾 '+ts;
+}
+
+// ══ RENDER ══
+function pct(v,t){return t===0?0:Math.round(v/t*10000)/100;}
+function renderHalka(){
+  const grp={},ord=[];
+  data.forEach(r=>{if(!grp[r.halka]){grp[r.halka]=[];ord.push(r.halka);}grp[r.halka].push(r);});
+  let html='';
+  ord.forEach(hn=>{
+    const rows=grp[hn];
+    const hT=rows.reduce((s,r)=>s+r.total,0),hV=rows.reduce((s,r)=>s+r.verified,0);
+    const hP=hT-hV,hPct=pct(hV,hT);
+    const icon=hn.startsWith('हल्का')?'📍':'🏢';
+    html+=`<div class="halka-sec">
+      <div class="halka-hdr open" onclick="toggleSec(this)">
+        <span class="hh-name">${icon} ${hn}</span>
+        <div style="display:flex;align-items:center">
+          <div class="hh-badges">
+            <span class="bdg bdg-total">${hT}</span>
+            <span class="bdg bdg-ok">${hV} ✓</span>
+            ${hP>0?'<span class="bdg bdg-pend">'+hP+' शेष</span>':''}
+            <span class="bdg bdg-pct">${hPct}%</span>
+          </div>
+          <span class="hh-arrow">▼</span>
+        </div>
+      </div>
+      <div class="halka-body" style="max-height:3000px">
+        <div class="beat-list">`;
+    rows.forEach(r=>{
+      const p=r.total-r.verified,pc=pct(r.verified,r.total);
+      const cls=p===0?'done':'pend';
+      html+=`<div class="beat-card ${cls}" data-beat="${r.beat}">
+        <div class="beat-card-top">
+          <div class="beat-card-left">
+            <div class="bc-halka">${r.halka} — बीट ${r.beat}</div>
+            <div class="bc-officer">👮 ${r.officer}</div>
+          </div>
+          <div class="beat-card-right">
+            ${p===0?'<div class="bc-status-done">✅</div>':'<div class="bc-status-pend">⚠️ '+p+'</div>'}
+            <div class="bc-pct">${pc}%</div>
+          </div>
+        </div>
+        <div class="beat-card-bar-wrap"><div class="beat-card-bar" style="width:${pc}%"></div></div>
+        <div class="beat-card-nums">
+          <span class="bc-total">कुल: ${r.total}</span>
+          <span class="bc-verified">सत्यापित: ${r.verified}</span>
+          <span class="bc-pending">शेष: ${p}</span>
+        </div>
+        <div class="bc-villages">${r.villages}</div>
+        <div class="edit-inputs">
+          <div class="edit-field">
+            <label>कुल</label>
+            <input class="edit-inp" type="number" min="0" max="999" value="${r.total}" onchange="updBeat(${r.beat},'total',this.value)">
+          </div>
+          <div class="edit-field">
+            <label>सत्यापित</label>
+            <input class="edit-inp" type="number" min="0" max="999" value="${r.verified}" onchange="updBeat(${r.beat},'verified',this.value)">
+          </div>
+        </div>
+      </div>`;
+    });
+    html+=`</div>
+        <div class="subtotal-row">
+          <span>📊 ${hn} उप योग</span>
+          <span>कुल: ${hT} | ✅ ${hV} | ⚠️ ${hP} | ${hPct}%</span>
+        </div>
+      </div></div>`;
+  });
+  document.getElementById('halkaContainer').innerHTML=html;
+}
+function renderPending(){
+  const pends=data.filter(r=>(r.total-r.verified)>0).sort((a,b)=>(b.total-b.verified)-(a.total-a.verified));
+  const tp=pends.reduce((s,r)=>s+(r.total-r.verified),0);
+  document.getElementById('pendBadge').textContent=tp+' शेष';
+  if(!pends.length){document.getElementById('pendingContainer').innerHTML='<div class="no-pending">🎉 सभी बीट का सत्यापन पूर्ण!</div>';return;}
+  const high=pends.filter(r=>(r.total-r.verified)>=10);
+  const med=pends.filter(r=>{const p=r.total-r.verified;return p>=5&&p<10;});
+  const low=pends.filter(r=>(r.total-r.verified)<5);
+  function card(r,cls){
+    const p=r.total-r.verified,pc=pct(r.verified,r.total);
+    return `<div class="pcard ${cls}">
+      <div class="pcard-top">
+        <div><div class="pcard-beat">${r.halka}</div><div class="pcard-beatnum">बीट नं. ${r.beat}</div></div>
+        <div class="pcard-big">${p}</div>
+      </div>
+      <div class="pcard-officer">👮 ${r.officer}</div>
+      <div class="pcard-bar-wrap"><div class="pcard-bar" style="width:${pc}%"></div></div>
+      <div class="pcard-stats"><span>कुल: ${r.total}</span><span>✅ ${r.verified}</span><span>${pc}%</span></div>
+      <div class="pcard-villages">${r.villages}</div>
+    </div>`;
+  }
+  let html='';
+  if(high.length)html+=`<div class="priority-sec"><div class="priority-lbl high">🔴 उच्च (10+ शेष)</div><div class="pend-cards">${high.map(r=>card(r,'high')).join('')}</div></div>`;
+  if(med.length)html+=`<div class="priority-sec"><div class="priority-lbl med">🟡 मध्यम (5-9 शेष)</div><div class="pend-cards">${med.map(r=>card(r,'med')).join('')}</div></div>`;
+  if(low.length)html+=`<div class="priority-sec"><div class="priority-lbl low">🟢 सामान्य (1-4 शेष)</div><div class="pend-cards">${low.map(r=>card(r,'low')).join('')}</div></div>`;
+  document.getElementById('pendingContainer').innerHTML=html;
+}
+function updateSummary(){
+  const t=data.reduce((s,r)=>s+r.total,0),v=data.reduce((s,r)=>s+r.verified,0);
+  const p=t-v,pc=pct(v,t);
+  ['s-total','gt-total'].forEach(id=>document.getElementById(id).textContent=t);
+  ['s-verified','gt-verified'].forEach(id=>document.getElementById(id).textContent=v);
+  ['s-pending','gt-pending'].forEach(id=>document.getElementById(id).textContent=p);
+  ['s-pct','gt-pct'].forEach(id=>document.getElementById(id).textContent=pc+'%');
+}
+function renderAll(){renderHalka();renderPending();updateSummary();}
+function updBeat(b,f,v){
+  const i=data.findIndex(r=>r.beat===b);if(i<0)return;
+  let val=parseInt(v,10);if(isNaN(val)||val<0)val=0;
+  if(f==='verified'&&val>data[i].total)val=data[i].total;
+  if(f==='total'&&val<data[i].verified)data[i].verified=val;
+  data[i][f]=val;updateSummary();
+}
+
+// ══ EDIT MODE ══
+function setEditMode(on){
+  editMode=on;
+  const panel=document.getElementById('mainPanel');
+  const bar=document.getElementById('editModeBar');
+  const ebtn=document.getElementById('adminEditBtn');
+  const sbtn=document.getElementById('adminSaveBtn');
+  if(on){
+    panel.classList.add('edit-mode');
+    bar.classList.add('show');
+    ebtn.style.display='none';
+    sbtn.style.display='flex';
+  } else {
+    panel.classList.remove('edit-mode');
+    bar.classList.remove('show');
+    ebtn.style.display='flex';
+    sbtn.style.display='none';
+  }
+}
+function toggleEditFromAdmin(){
+  closeOv('adminPanelOv');
+  openOv('editPwOv');
+  setTimeout(()=>document.getElementById('editPwIn').focus(),300);
+}
+function saveFromAdmin(){
+  saveData();renderAll();
+  setEditMode(false);
+  closeOv('adminPanelOv');
+  showToast('✅ डेटा सफलतापूर्वक सहेजा गया!','tsuccess');
+}
+
+// ══ ADMIN LOGIN ══
+let editPwOvPending=false;
+function openAdminLogin(){openOv('adminLoginOv');setTimeout(()=>document.getElementById('adminPwIn').focus(),300);}
+async function checkAdminPw(){
+  const val=document.getElementById('adminPwIn').value.trim();
+  const h=await sha256(val);
+  if(h===getCfg().pwHash){adminAtt=0;closeOv('adminLoginOv');openAdminPanel();}
+  else{
+    adminAtt++;
+    const inp=document.getElementById('adminPwIn');inp.classList.add('wrong');inp.value='';
+    setTimeout(()=>inp.classList.remove('wrong'),400);
+    const rem=MAX_ATT-adminAtt;
+    document.getElementById('adminPwErr').textContent='❌ गलत पासवर्ड!';
+    if(rem>0)document.getElementById('adminPwAtt').textContent=rem+' प्रयास शेष';
+    else{document.getElementById('adminPwErr').textContent='🚫 बहुत अधिक गलत प्रयास।';setTimeout(()=>closeOv('adminLoginOv'),1800);}
+  }
+}
+function openAdminPanel(){
+  const t=data.reduce((s,r)=>s+r.total,0),v=data.reduce((s,r)=>s+r.verified,0);
+  const p=t-v,pc=pct(v,t);
+  document.getElementById('adminStats').innerHTML=`
+    <div class="as-box"><div class="as-num">${t}</div><div class="as-lbl">कुल</div></div>
+    <div class="as-box"><div class="as-num" style="color:var(--green)">${v}</div><div class="as-lbl">सत्यापित</div></div>
+    <div class="as-box"><div class="as-num" style="color:var(--red)">${p}</div><div class="as-lbl">शेष</div></div>
+    <div class="as-box"><div class="as-num" style="color:var(--accent)">${pc}%</div><div class="as-lbl">प्रतिशत</div></div>`;
+  const ebtn=document.getElementById('adminEditBtn');
+  const sbtn=document.getElementById('adminSaveBtn');
+  if(editMode){ebtn.style.display='none';sbtn.style.display='flex';}
+  else{ebtn.style.display='flex';sbtn.style.display='none';}
+  openOv('adminPanelOv');
+}
+async function checkEditPw(){
+  const val=document.getElementById('editPwIn').value.trim();
+  const h=await sha256(val);
+  if(h===getCfg().pwHash){
+    editAtt=0;closeOv('editPwOv');
+    setEditMode(true);
+    showToast('✏️ संपादन मोड चालू','tinfo');
+  } else {
+    editAtt++;
+    const inp=document.getElementById('editPwIn');inp.classList.add('wrong');inp.value='';
+    setTimeout(()=>inp.classList.remove('wrong'),400);
+    const rem=MAX_ATT-editAtt;
+    document.getElementById('editPwErr').textContent='❌ गलत पासवर्ड!';
+    if(rem>0)document.getElementById('editPwAtt').textContent=rem+' प्रयास शेष';
+    else{document.getElementById('editPwErr').textContent='🚫 बहुत अधिक गलत प्रयास।';setTimeout(()=>closeOv('editPwOv'),1800);}
+  }
+}
+
+// ══ CHANGE PASSWORD ══
+function openChangePw(){
+  ['cpCurrent','cpNew','cpConfirm'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('cpErr').textContent='';
+  document.getElementById('pwStr1').style.cssText='height:4px;border-radius:4px;background:var(--border);width:0;transition:all .3s;margin:-10px 0 14px';
+  openOv('changePwOv');
+}
+async function doChangePw(){
+  const cur=document.getElementById('cpCurrent').value.trim();
+  const nw=document.getElementById('cpNew').value.trim();
+  const conf=document.getElementById('cpConfirm').value.trim();
+  const err=document.getElementById('cpErr');
+  if(!cur||!nw||!conf){err.textContent='❌ सभी फ़ील्ड भरें।';return;}
+  if(nw.length<4){err.textContent='❌ पासवर्ड कम से कम 4 अक्षर।';return;}
+  if(nw!==conf){err.textContent='❌ नया पासवर्ड मेल नहीं खाता।';return;}
+  const cfg=getCfg();
+  if(await sha256(cur)!==cfg.pwHash){
+    document.getElementById('cpCurrent').classList.add('wrong');
+    setTimeout(()=>document.getElementById('cpCurrent').classList.remove('wrong'),400);
+    err.textContent='❌ वर्तमान पासवर्ड गलत।';return;
+  }
+  cfg.pwHash=await sha256(nw);saveCfg(cfg);
+  closeOv('changePwOv');showToast('✅ पासवर्ड सफलतापूर्वक बदल गया!','tsuccess');
+}
+
+// ══ SECURITY QUESTIONS ══
+function openSetSecurity(){
+  ['sq1Ans','sq2Ans'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sqErr').textContent='';
+  openOv('setSecOv');
+}
+async function doSetSecurity(){
+  const a1=document.getElementById('sq1Ans').value.trim();
+  const a2=document.getElementById('sq2Ans').value.trim();
+  const err=document.getElementById('sqErr');
+  if(!a1||!a2){err.textContent='❌ दोनों उत्तर दर्ज करें।';return;}
+  const sel1=document.getElementById('sq1Sel');
+  const sel2=document.getElementById('sq2Sel');
+  const l1=sel1.value==='custom'?document.getElementById('sq1Cust').value.trim():sel1.options[sel1.selectedIndex].text;
+  const l2=sel2.value==='custom'?document.getElementById('sq2Cust').value.trim():sel2.options[sel2.selectedIndex].text;
+  if(!l1||!l2){err.textContent='❌ प्रश्न खाली नहीं हो सकता।';return;}
+  const cfg=getCfg();
+  cfg.sq1Hash=await sha256(a1.toLowerCase());cfg.sq1Label=l1;
+  cfg.sq2Hash=await sha256(a2.toLowerCase());cfg.sq2Label=l2;
+  saveCfg(cfg);closeOv('setSecOv');
+  showToast('🔐 सुरक्षा प्रश्न encrypted और सहेजे गए!','tsuccess');
+}
+
+// ══ FORGOT / RESET ══
+function openForgot(){
+  const cfg=getCfg();
+  document.getElementById('fq1Label').textContent='प्रश्न 1: '+cfg.sq1Label;
+  document.getElementById('fq2Label').textContent='प्रश्न 2: '+cfg.sq2Label;
+  ['fa1','fa2'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('forgotErr').textContent='';
+  openOv('forgotOv');
+}
+async function checkForgot(){
+  const a1=document.getElementById('fa1').value.trim().toLowerCase();
+  const a2=document.getElementById('fa2').value.trim().toLowerCase();
+  const err=document.getElementById('forgotErr');
+  if(!a1||!a2){err.textContent='❌ दोनों उत्तर दर्ज करें।';return;}
+  const cfg=getCfg();
+  const h1=await sha256(a1),h2=await sha256(a2);
+  if(h1===cfg.sq1Hash&&h2===cfg.sq2Hash){
+    closeOv('forgotOv');
+    ['npNew','npConfirm'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('npErr').textContent='';
+    document.getElementById('pwStr2').style.cssText='height:4px;border-radius:4px;background:var(--border);width:0;transition:all .3s;margin:-10px 0 14px';
+    openOv('newPwOv');
+  } else {
+    ['fa1','fa2'].forEach(id=>{document.getElementById(id).classList.add('wrong');document.getElementById(id).value='';});
+    setTimeout(()=>['fa1','fa2'].forEach(id=>document.getElementById(id).classList.remove('wrong')),500);
+    err.textContent='❌ एक या दोनों उत्तर गलत हैं।';
+  }
+}
+async function doResetPw(){
+  const nw=document.getElementById('npNew').value.trim();
+  const conf=document.getElementById('npConfirm').value.trim();
+  const err=document.getElementById('npErr');
+  if(!nw||!conf){err.textContent='❌ सभी फ़ील्ड भरें।';return;}
+  if(nw.length<4){err.textContent='❌ पासवर्ड कम से कम 4 अक्षर।';return;}
+  if(nw!==conf){err.textContent='❌ पासवर्ड मेल नहीं खाते।';return;}
+  const cfg=getCfg();cfg.pwHash=await sha256(nw);saveCfg(cfg);
+  closeOv('newPwOv');showToast('✅ नया पासवर्ड सेट हो गया!','tsuccess');
+}
+
+// ══ RESET DATA ══
+function openResetConfirm(){
+  document.getElementById('resetPwIn').value='';
+  document.getElementById('resetPwErr').textContent='';
+  openOv('resetConfOv');setTimeout(()=>document.getElementById('resetPwIn').focus(),300);
+}
+async function doReset(){
+  const val=document.getElementById('resetPwIn').value.trim();
+  const err=document.getElementById('resetPwErr');
+  if(!val){err.textContent='❌ पासवर्ड दर्ज करें।';return;}
+  const h=await sha256(val);
+  if(h!==getCfg().pwHash){
+    document.getElementById('resetPwIn').classList.add('wrong');
+    document.getElementById('resetPwIn').value='';
+    setTimeout(()=>document.getElementById('resetPwIn').classList.remove('wrong'),400);
+    err.textContent='❌ गलत पासवर्ड! रीसेट रद्द।';return;
+  }
+  closeOv('resetConfOv');
+  localStorage.removeItem('bd_v3');localStorage.removeItem('bd_ts');
+  data=ORIG.map(d=>({...d}));
+  setEditMode(false);renderAll();
+  document.getElementById('headerDate').textContent='📅 04-03-2026 | 02:50 PM';
+  showToast('🔄 सभी डेटा मूल स्थिति में रीसेट हो गया।','tinfo');
+}
+
+// ══ UTILS ══
+function openOv(id){document.getElementById(id).classList.add('show');}
+function closeOv(id){document.getElementById(id).classList.remove('show');}
+function toggleEye(id,btn){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁️':'🙈';}
+function toggleSec(hdr){
+  const body=hdr.nextElementSibling,open=hdr.classList.contains('open');
+  body.style.maxHeight=open?'0':body.scrollHeight+500+'px';
+  hdr.classList.toggle('open',!open);
+}
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');btn.classList.add('active');
+}
+function strengthBar(inputId,barId){
+  const v=document.getElementById(inputId).value;
+  const bar=document.getElementById(barId);
+  const cols=['#e0e0e0','#c0392b','#e67e22','#f1c40f','#2ecc71','#1a7a4a'];
+  const ws=['0%','20%','40%','60%','80%','100%'];
+  let s=0;
+  if(v.length>=4)s++;if(v.length>=8)s++;
+  if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;
+  bar.style.width=ws[s];bar.style.background=cols[s];
+}
+let toastT;
+function showToast(msg,type='tsuccess'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200);
+}
+// Close modal on background tap
+document.querySelectorAll('.overlay').forEach(ov=>{
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('show');});
+});
+
+// ══ INIT ══
+loadData();renderAll();
+if(!localStorage.getItem('sc_v3'))saveCfg({...DEFAULTS});
+const ts=localStorage.getItem('bd_ts');
+if(ts)document.getElementById('headerDate').textContent='📅 04-03-2026 | 💾 '+ts;
+</script>
+</body>
+</html>
