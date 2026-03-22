@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>अपराधी सत्यापन — थाना चरखारी</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1a56db;--blue-lt:#e8f0fe;--blue-md:#3b6fd4;
+  --green:#15803d;--green-lt:#dcfce7;--green-md:#16a34a;
+  --red:#dc2626;--red-lt:#fee2e2;--red-md:#ef4444;
+  --amber:#d97706;--amber-lt:#fef3c7;--amber-md:#f59e0b;
+  --purple:#7c3aed;--purple-lt:#ede9fe;
+  --gray:#374151;--gray-lt:#f9fafb;--gray-md:#6b7280;
+  --white:#ffffff;--border:#e5e7eb;--border2:#d1d5db;
+  --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.05);
+  --radius:12px;--radius-sm:8px;--radius-lg:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:#f1f5f9;min-height:100vh;color:var(--gray);padding-bottom:60px}
+
+/* ── HEADER ── */
+.site-header{
+  background:linear-gradient(135deg,#1e3a8a 0%,#1a56db 60%,#2563eb 100%);
+  padding:0;position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 12px rgba(26,86,219,.35);
+}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 10px}
+.header-left{display:flex;align-items:center;gap:11px}
+.header-logo{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.35);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.header-title{font-family:'Tiro Devanagari Hindi',serif;font-size:15px;color:#fff;font-weight:700;line-height:1.3}
+.header-subtitle{font-size:10px;color:rgba(255,255,255,.75);margin-top:2px;letter-spacing:.4px}
+.admin-btn{
+  background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.35);
+  color:#fff;border-radius:10px;padding:8px 14px;
+  font-size:12px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;
+  font-family:'Inter',sans-serif;transition:all .18s;
+}
+.admin-btn:active{background:rgba(255,255,255,.25)}
+
+/* Header info strip from JSON */
+.header-strip{
+  background:rgba(0,0,0,.18);
+  padding:7px 14px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;
+}
+.hstrip-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:rgba(255,255,255,.85);font-weight:500}
+.hstrip-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80;flex-shrink:0}
+.hstrip-link{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:#fff;text-decoration:none;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);padding:4px 12px;border-radius:20px;white-space:nowrap;transition:background .18s;letter-spacing:.2px}
+.hstrip-link:active{background:rgba(255,255,255,.3)}
+
+/* ── EDIT BAR ── */
+.edit-bar{
+  display:none;background:#f59e0b;color:#fff;
+  text-align:center;padding:9px 16px;font-size:12px;font-weight:700;
+  font-family:'Tiro Devanagari Hindi',serif;letter-spacing:.3px;
+  box-shadow:0 2px 8px rgba(245,158,11,.4);
+}
+.edit-bar.show{display:block}
+
+/* ── SUMMARY CARDS ── */
+.summary-section{padding:14px 12px 8px}
+.summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:500px;margin:0 auto}
+.scard{
+  background:#fff;border-radius:var(--radius-lg);padding:16px 14px;
+  border:1.5px solid var(--border);box-shadow:var(--shadow-md);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  position:relative;overflow:hidden;
+}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.scard.blue::before{background:linear-gradient(90deg,#1a56db,#60a5fa)}
+.scard.green::before{background:linear-gradient(90deg,#15803d,#4ade80)}
+.scard.red::before{background:linear-gradient(90deg,#dc2626,#f87171)}
+.scard.amber::before{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.sc-icon-wrap{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  margin-bottom:8px;
+}
+.scard.blue .sc-icon-wrap{background:var(--blue-lt)}
+.scard.green .sc-icon-wrap{background:var(--green-lt)}
+.scard.red .sc-icon-wrap{background:var(--red-lt)}
+.scard.amber .sc-icon-wrap{background:var(--amber-lt)}
+.sc-num{font-size:28px;font-weight:800;line-height:1;letter-spacing:-1px}
+.scard.blue .sc-num{color:var(--blue)}
+.scard.green .sc-num{color:var(--green-md)}
+.scard.red .sc-num{color:var(--red)}
+.scard.amber .sc-num{color:var(--amber)}
+.sc-label{font-family:'Tiro Devanagari Hindi',serif;font-size:11px;color:var(--gray-md);margin-top:5px}
+
+/* ── TABS ── */
+.tabs-section{padding:4px 12px 10px;max-width:500px;margin:0 auto}
+.tabs{display:flex;background:#fff;border-radius:var(--radius);padding:4px;gap:4px;border:1.5px solid var(--border);box-shadow:var(--shadow)}
+.tab-btn{
+  flex:1;padding:10px 6px;background:transparent;border:none;
+  color:var(--gray-md);font-family:'Tiro Devanagari Hindi',serif;font-size:13px;
+  cursor:pointer;transition:all .2s;border-radius:9px;font-weight:500;
+}
+.tab-btn.active{background:var(--blue);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(26,86,219,.35)}
+
+/* ── MAIN PANEL ── */
+.panel-section{padding:0 12px;max-width:500px;margin:0 auto}
+.main-panel{background:#fff;border-radius:var(--radius-lg);border:1.5px solid var(--border);box-shadow:var(--shadow-lg);overflow:hidden}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* ── HALKA SECTIONS ── */
+.halka-sec{border-bottom:1px solid var(--border)}
+.halka-sec:last-child{border-bottom:none}
+.halka-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;cursor:pointer;user-select:none;
+  background:linear-gradient(90deg,#eff6ff,#f8fafc);
+  border-left:4px solid var(--blue);transition:background .15s;
+}
+.halka-hdr:active{background:#e0ebff}
+.hh-left{display:flex;align-items:center;gap:8px}
+.hh-icon{
+  width:32px;height:32px;border-radius:8px;background:var(--blue-lt);
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+}
+.hh-name{font-family:'Tiro Devanagari Hindi',serif;font-size:13.5px;color:#1e3a8a;font-weight:700}
+.hh-right{display:flex;align-items:center;gap:6px}
+.hh-badges{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.bdg{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.2px}
+.bdg-total{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.bdg-ok{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0}
+.bdg-pend{background:var(--red-lt);color:var(--red);border:1px solid #fecaca}
+.bdg-pct{background:var(--blue-lt);color:var(--blue);border:1px solid #bfdbfe}
+.hh-arrow{color:var(--blue);font-size:11px;transition:transform .25s;margin-left:4px;flex-shrink:0}
+.halka-hdr.open .hh-arrow{transform:rotate(180deg)}
+.halka-body{overflow:hidden;transition:max-height .3s ease}
+
+/* ── BEAT CARDS ── */
+.beat-list{padding:8px 10px 4px}
+.beat-card{
+  border-radius:var(--radius);padding:12px 13px;margin-bottom:8px;
+  border:1.5px solid var(--border);background:#fff;
+  transition:box-shadow .15s,transform .1s;
+  position:relative;overflow:hidden;
+}
+.beat-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
+.beat-card.done{background:#f0fdf4;border-color:#bbf7d0}
+.beat-card.done::before{background:linear-gradient(180deg,#15803d,#4ade80)}
+.beat-card.pend{background:#fffbeb;border-color:#fed7aa}
+.beat-card.pend::before{background:linear-gradient(180deg,#d97706,#fbbf24)}
+.beat-card.pend-high{background:#fff5f5;border-color:#fecaca}
+.beat-card.pend-high::before{background:linear-gradient(180deg,#dc2626,#f87171)}
+
+.beat-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.beat-left .bc-beat{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.3px;text-transform:uppercase;margin-bottom:2px}
+.beat-left .bc-officer{font-size:12.5px;font-weight:700;color:#1e293b}
+.beat-left .bc-halka{font-size:10.5px;color:var(--gray-md);margin-top:2px}
+.beat-right{text-align:center;flex-shrink:0;margin-left:8px;min-width:44px}
+.bc-done-wrap{background:var(--green-lt);border-radius:8px;padding:6px 10px}
+.bc-done-icon{font-size:20px;line-height:1}
+.bc-done-pct{font-size:10px;color:var(--green);font-weight:700;margin-top:2px}
+.bc-pend-wrap{border-radius:8px;padding:6px 8px;text-align:center}
+.beat-card.pend .bc-pend-wrap{background:var(--amber-lt)}
+.beat-card.pend-high .bc-pend-wrap{background:var(--red-lt)}
+.bc-pend-num{font-size:22px;font-weight:800;line-height:1;letter-spacing:-1px}
+.beat-card.pend .bc-pend-num{color:var(--amber)}
+.beat-card.pend-high .bc-pend-num{color:var(--red)}
+.bc-pct-lbl{font-size:9.5px;font-weight:700;margin-top:2px}
+.beat-card.pend .bc-pct-lbl{color:var(--amber)}
+.beat-card.pend-high .bc-pct-lbl{color:var(--red)}
+
+.beat-bar-bg{height:6px;background:#e2e8f0;border-radius:6px;margin-bottom:8px;overflow:hidden}
+.beat-bar{height:6px;border-radius:6px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.beat-card.done .beat-bar{background:linear-gradient(90deg,#15803d,#4ade80)}
+.beat-card.pend .beat-bar{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.beat-card.pend-high .beat-bar{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+.beat-stats{display:flex;gap:10px;font-size:11px;margin-bottom:6px;flex-wrap:wrap}
+.bs-item{display:flex;align-items:center;gap:3px;font-weight:600}
+.bs-item.total{color:#64748b}
+.bs-item.ver{color:var(--green-md)}
+.bs-item.pend{color:var(--amber)}
+.bs-item.pend-h{color:var(--red)}
+.bc-villages{font-size:10px;color:#94a3b8;line-height:1.5;margin-top:2px}
+.bc-villages span{background:#f1f5f9;padding:1px 6px;border-radius:4px;margin:1px 2px;display:inline-block;font-size:9.5px;color:#475569}
+
+/* EDIT INPUTS */
+.edit-inputs{display:none;margin-top:10px;padding:10px 0 0;border-top:1.5px dashed #e2e8f0}
+.edit-mode .edit-inputs{display:flex;gap:12px;align-items:flex-end}
+.edit-field{display:flex;flex-direction:column;gap:4px}
+.edit-field label{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.4px;text-transform:uppercase}
+.edit-inp{
+  width:72px;padding:8px;border:2px solid var(--border2);border-radius:8px;
+  font-size:15px;font-weight:800;text-align:center;background:#fff;color:#1e293b;
+  outline:none;font-family:'Inter',sans-serif;transition:border .2s;
+}
+.edit-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt)}
+
+/* SUBTOTAL ROW */
+.subtotal-row{
+  background:linear-gradient(90deg,#eff6ff,#f0fdf4);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:9px 14px;display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;font-weight:700;color:#475569;
+}
+.subtotal-row .sub-name{color:var(--blue);font-family:'Tiro Devanagari Hindi',serif;font-size:12px}
+
+/* GRAND TOTAL */
+.grand-total{
+  background:linear-gradient(135deg,#1e3a8a,#1a56db);
+  padding:18px 16px;
+}
+.gt-label{
+  font-family:'Tiro Devanagari Hindi',serif;font-size:13px;
+  color:rgba(255,255,255,.9);font-weight:700;margin-bottom:14px;
+  display:flex;align-items:center;gap:7px;
+}
+.gt-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gt-item{
+  background:rgba(255,255,255,.12);border-radius:10px;
+  padding:11px 8px;text-align:center;border:1px solid rgba(255,255,255,.2);
+}
+.gt-num{font-size:20px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
+.gt-lbl{font-size:9.5px;color:rgba(255,255,255,.7);margin-top:4px;font-family:'Tiro Devanagari Hindi',serif}
+.gt-item.verified .gt-num{color:#4ade80}
+.gt-item.pending .gt-num{color:#fb923c}
+.gt-item.pct .gt-num{color:#fbbf24}
+
+/* PENDING TAB */
+.pend-header{
+  padding:14px 14px 12px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1.5px solid var(--border);background:#fff8f5;
+}
+.pend-header h2{font-family:'Tiro Devanagari Hindi',serif;font-size:15px;color:#1e293b;font-weight:700}
+.pend-badge{background:var(--red);color:#fff;padding:3px 12px;border-radius:20px;font-size:10.5px;font-weight:700;box-shadow:0 2px 8px rgba(220,38,38,.35)}
+.priority-sec{padding:10px 10px 2px}
+.priority-lbl{
+  display:flex;align-items:center;gap:7px;font-family:'Tiro Devanagari Hindi',serif;
+  font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;margin-bottom:8px;
+}
+.priority-lbl.high{background:var(--red-lt);color:var(--red);border:1px solid #fecaca}
+.priority-lbl.med{background:var(--amber-lt);color:var(--amber);border:1px solid #fed7aa}
+.priority-lbl.low{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0}
+.no-pending{text-align:center;padding:40px 20px;color:var(--green-md);font-family:'Tiro Devanagari Hindi',serif;font-size:15px;font-weight:700}
+
+.pcard{border-radius:var(--radius);padding:13px;border:1.5px solid var(--border);margin-bottom:8px;background:#fff}
+.pcard.high{background:#fff5f5;border-color:#fecaca}
+.pcard.med{background:#fffbeb;border-color:#fed7aa}
+.pcard.low{background:#f0fdf4;border-color:#bbf7d0}
+.pcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.pcard-beat{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;font-weight:700;color:#1e293b}
+.pcard-num-badge{font-size:10px;color:var(--gray-md);margin-top:1px}
+.pcard-big{font-size:30px;font-weight:800;line-height:1;letter-spacing:-1.5px}
+.pcard.high .pcard-big{color:var(--red)}
+.pcard.med .pcard-big{color:var(--amber)}
+.pcard.low .pcard-big{color:var(--green-md)}
+.pcard-officer{font-size:11px;color:var(--gray-md);margin-bottom:7px;font-weight:500}
+.pcard-bar-bg{height:5px;background:#e2e8f0;border-radius:5px;margin-bottom:6px;overflow:hidden}
+.pcard-bar{height:5px;border-radius:5px}
+.pcard.high .pcard-bar{background:linear-gradient(90deg,#dc2626,#f87171)}
+.pcard.med .pcard-bar{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.pcard.low .pcard-bar{background:linear-gradient(90deg,#15803d,#4ade80)}
+.pcard-stats{display:flex;justify-content:space-between;font-size:10.5px;font-weight:600;color:#64748b}
+.pcard-villages{font-size:10px;color:#94a3b8;margin-top:5px}
+
+/* FOOTER from JSON */
+.site-footer{
+  background:linear-gradient(135deg,#1e3a8a,#1a56db);
+  padding:14px 16px;margin-top:4px;
+}
+.footer-main{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.footer-logo-area{display:flex;align-items:center;gap:9px}
+.footer-emblem{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:18px}
+.footer-title{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;color:#fff;font-weight:700}
+.footer-sub{font-size:10px;color:rgba(255,255,255,.65);margin-top:1px}
+.footer-sync{font-size:10px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.15);padding:5px 10px;border-radius:8px}
+.footer-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.fstat{background:rgba(255,255,255,.1);border-radius:8px;padding:8px 4px;text-align:center;border:1px solid rgba(255,255,255,.15)}
+.fstat-num{font-size:16px;font-weight:800;color:#fff}
+.fstat-lbl{font-size:9px;color:rgba(255,255,255,.65);margin-top:2px;font-family:'Tiro Devanagari Hindi',serif}
+.fstat.ver .fstat-num{color:#4ade80}
+.fstat.pend .fstat-num{color:#fb923c}
+.fstat.pct .fstat-num{color:#fbbf24}
+.footer-bottom{text-align:center;font-size:9.5px;color:rgba(255,255,255,.5);letter-spacing:.4px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12)}
+.footer-dev{margin-top:10px;padding:10px 12px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.1);text-align:center}
+.footer-dev-title{font-size:9px;color:rgba(255,255,255,.38);letter-spacing:.7px;text-transform:uppercase;margin-bottom:5px}
+.footer-dev-name{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.88);margin-bottom:5px}
+.footer-dev-links{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:4px}
+.footer-dev-link{font-size:10.5px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:4px;text-decoration:none;background:rgba(255,255,255,.08);padding:4px 11px;border-radius:20px;border:1px solid rgba(255,255,255,.12);transition:all .18s}
+.footer-dev-link:active{background:rgba(255,255,255,.2)}
+
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.show{opacity:1;pointer-events:all}
+.modal-box{
+  background:#fff;border-radius:20px 20px 0 0;
+  padding:20px 20px 40px;width:100%;max-width:480px;
+  transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);
+  max-height:92vh;overflow-y:auto;
+  box-shadow:0 -8px 40px rgba(0,0,0,.2);
+}
+.overlay.show .modal-box{transform:translateY(0)}
+.modal-drag{width:44px;height:4px;background:#e2e8f0;border-radius:4px;margin:0 auto 20px}
+.modal-icon{font-size:38px;display:block;text-align:center;margin-bottom:10px}
+.modal-title{font-family:'Tiro Devanagari Hindi',serif;font-size:18px;font-weight:700;color:#1e293b;text-align:center;margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--gray-md);text-align:center;margin-bottom:20px;line-height:1.6}
+.field-label{font-size:11px;font-weight:700;color:var(--blue);display:block;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase}
+.field-wrap{position:relative;margin-bottom:14px}
+.field-input{width:100%;padding:12px 44px 12px 14px;border:2px solid var(--border2);border-radius:10px;font-size:15px;font-family:'Inter',sans-serif;color:#1e293b;outline:none;background:#fff;transition:border .2s}
+.field-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt)}
+.field-input.wrong{border-color:var(--red);animation:shake .3s}
+.field-input::placeholder{color:#cbd5e1}
+.field-select{width:100%;padding:11px 13px;border:2px solid var(--border2);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:#1e293b;background:#fff;outline:none;margin-bottom:14px;transition:border .2s}
+.field-select:focus{border-color:var(--blue)}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:17px;color:var(--gray-md);padding:4px}
+.modal-btn{width:100%;padding:13px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;margin-top:4px}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 4px 12px rgba(26,86,219,.35)}
+.btn-success{background:var(--green-md);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.3)}
+.btn-danger{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(220,38,38,.3)}
+.modal-btn:active{opacity:.88;transform:scale(.98)}
+.btn-link{width:100%;background:none;border:none;color:var(--blue);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:10px;text-decoration:underline;padding:6px;display:block;text-align:center;text-underline-offset:3px}
+.btn-cancel{width:100%;background:none;border:none;color:var(--gray-md);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:6px;padding:6px;display:block;text-align:center}
+.err-msg{color:var(--red);font-size:11px;min-height:15px;margin-bottom:8px;font-weight:600}
+.att-msg{font-size:10.5px;color:var(--gray-md);text-align:right;margin-bottom:6px}
+.divider{border:none;border-top:1.5px solid var(--border);margin:16px 0}
+.sec-note{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:10px 12px;font-size:11px;color:var(--blue);margin-bottom:14px;line-height:1.6}
+.warn-box{background:var(--red-lt);border:1.5px solid #fecaca;border-radius:10px;padding:11px 12px;font-size:11.5px;color:var(--red);margin-bottom:16px;line-height:1.6}
+.pw-strength{height:4px;border-radius:4px;background:#e2e8f0;margin:-10px 0 14px;transition:all .3s;width:0}
+
+/* ADMIN PANEL */
+.admin-header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.admin-title-txt{font-family:'Tiro Devanagari Hindi',serif;font-size:17px;font-weight:700;color:#1e293b}
+.admin-title-sub{font-size:10px;color:var(--gray-md);margin-top:2px}
+.admin-logged{background:var(--green-lt);color:var(--green);border:1.5px solid #bbf7d0;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700}
+.admin-stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.as-box{background:#f8fafc;border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.as-num{font-size:22px;font-weight:800;color:#1e293b;line-height:1}
+.as-lbl{font-size:10px;color:var(--gray-md);font-family:'Tiro Devanagari Hindi',serif;margin-top:3px}
+.admin-sec-lbl{font-size:10px;font-weight:700;color:var(--blue);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase}
+.admin-act-btn{width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);background:#f8fafc;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#1e293b;transition:all .18s;text-align:left}
+.admin-act-btn:active{background:#e2e8f0}
+.admin-act-btn.danger{border-color:#fecaca;color:var(--red);background:#fff5f5}
+.admin-logout{width:100%;padding:11px;border-radius:10px;background:var(--red-lt);border:1.5px solid #fecaca;color:var(--red);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px;transition:all .18s}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);color:#fff;padding:11px 22px;border-radius:20px;font-weight:700;font-size:13px;z-index:9999;opacity:0;transition:all .3s cubic-bezier(.32,.72,0,1);pointer-events:none;white-space:nowrap;max-width:92vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.tsuccess{background:var(--green-md);box-shadow:0 4px 20px rgba(22,163,74,.4)}
+.toast.terror{background:var(--red);box-shadow:0 4px 20px rgba(220,38,38,.4)}
+.toast.tinfo{background:var(--blue);box-shadow:0 4px 20px rgba(26,86,219,.4)}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.scard{animation:fadeUp .4s ease both}
+.scard:nth-child(1){animation-delay:.05s}.scard:nth-child(2){animation-delay:.1s}
+.scard:nth-child(3){animation-delay:.15s}.scard:nth-child(4){animation-delay:.2s}
+</style>
+</head>
+<body>
+
+<!-- ── SITE HEADER (data from JSON) ── -->
+<header class="site-header">
+  <div class="header-top">
+    <div class="header-left">
+      <div class="header-logo">🛡️</div>
+      <div>
+        <div class="header-title" id="hdr-thana">थाना चरखारी, महोबा</div>
+        <div class="header-subtitle" id="hdr-sub">UP Police · अपराधी सत्यापन प्रणाली</div>
+      </div>
+    </div>
+    <button class="admin-btn" onclick="openAdminLogin()">⚙️ Admin</button>
+  </div>
+  <div class="header-strip">
+    <div class="hstrip-item"><span class="hstrip-dot"></span><span id="hdr-live">Live</span></div>
+    <div class="hstrip-item">📅 <span id="hdr-date">लोड हो रहा है...</span></div>
+    <div class="hstrip-item">📊 <span id="hdr-pct-strip">—</span> सत्यापित</div>
+    <a class="hstrip-link" href="https://vikasupp.page.gd" target="_blank" rel="noopener">🌐 उ.प्र. पुलिस डायरेक्ट्री</a>
+  </div>
+</header>
+
+<!-- EDIT BAR -->
+<div class="edit-bar" id="editModeBar">✏️ संपादन मोड चालू — Admin → सहेजें दबाएं</div>
+
+<!-- SUMMARY CARDS -->
+<section class="summary-section">
+  <div class="summary-grid">
+    <div class="scard blue"><div class="sc-icon-wrap">👥</div><div class="sc-num" id="s-total">—</div><div class="sc-label">कुल अपराधी</div></div>
+    <div class="scard green"><div class="sc-icon-wrap">✅</div><div class="sc-num" id="s-verified">—</div><div class="sc-label">सत्यापित</div></div>
+    <div class="scard red"><div class="sc-icon-wrap">⚠️</div><div class="sc-num" id="s-pending">—</div><div class="sc-label">सत्यापन शेष</div></div>
+    <div class="scard amber"><div class="sc-icon-wrap">📊</div><div class="sc-num" id="s-pct">—</div><div class="sc-label">सत्यापन %</div></div>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs-section">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('halka',this)">🗂️ हल्का/चौकी</button>
+    <button class="tab-btn" onclick="switchTab('pending',this)">⚠️ पेंडिंग</button>
+  </div>
+</div>
+
+<!-- MAIN PANEL -->
+<div class="panel-section">
+  <div class="main-panel" id="mainPanel">
+
+    <!-- HALKA TAB -->
+    <div id="tab-halka" class="tab-panel active">
+      <div id="halkaContainer">
+        <div style="text-align:center;padding:48px 20px;color:#94a3b8;font-size:14px">☁️ JSONBin से डेटा लोड हो रहा है...</div>
+      </div>
+      <!-- Grand Total from JSON -->
+    </div>
+
+    <!-- PENDING TAB -->
+    <div id="tab-pending" class="tab-panel">
+      <div class="pend-header">
+        <h2>⚠️ पेंडिंग सत्यापन</h2>
+        <span class="pend-badge" id="pendBadge">— शेष</span>
+      </div>
+      <div id="pendingContainer"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── SITE FOOTER (data from JSON) ── -->
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-logo-area">
+      <div class="footer-emblem">🛡️</div>
+      <div>
+        <div class="footer-title" id="ftr-thana">थाना चरखारी</div>
+        <div class="footer-sub" id="ftr-dist">जनपद महोबा · UP Police</div>
+      </div>
+    </div>
+    <div class="footer-sync">🔄 <span id="ftr-sync">अंतिम sync: —</span></div>
+  </div>
+  <div class="footer-stats">
+    <div class="fstat"><div class="fstat-num" id="ftr-total">—</div><div class="fstat-lbl">कुल अपराधी</div></div>
+    <div class="fstat ver"><div class="fstat-num" id="ftr-ver">—</div><div class="fstat-lbl">सत्यापित</div></div>
+    <div class="fstat pend"><div class="fstat-num" id="ftr-pend">—</div><div class="fstat-lbl">शेष</div></div>
+    <div class="fstat pct"><div class="fstat-num" id="ftr-pct">—</div><div class="fstat-lbl">प्रतिशत</div></div>
+  </div>
+  <div class="footer-bottom" id="ftr-bottom">थाना चरखारी · जनपद महोबा · UP Police · अपराधी सत्यापन</div>
+  <div class="footer-dev">
+    <div class="footer-dev-title">⚙️ Developed &amp; Maintained By</div>
+    <div class="footer-dev-name">Vikas Singh Verma</div>
+    <div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:5px">Computer Operator · थाना चरखारी, महोबा</div>
+    <div class="footer-dev-links">
+      <a class="footer-dev-link" href="mailto:coga.vikas@gmail.com">✉️ coga.vikas@gmail.com</a>
+      <a class="footer-dev-link" href="tel:+917007769767">📞 +91-7007769767</a>
+      <a class="footer-dev-link" href="https://vikasupp.page.gd" target="_blank" rel="noopener">🌐 vikasupp.page.gd</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ MODAL: EDIT PASSWORD ══ -->
+<div class="overlay" id="editPwOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🔒</span>
+    <div class="modal-title">संपादन हेतु लॉगिन</div>
+    <div class="modal-sub">डेटा बदलने के लिए पासवर्ड आवश्यक है</div>
+    <label class="field-label">पासवर्ड</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="editPwIn" placeholder="••••••" onkeydown="if(event.key==='Enter')checkEditPw()">
+      <button class="eye-btn" onclick="toggleEye('editPwIn',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="editPwErr"></div>
+    <div class="att-msg" id="editPwAtt"></div>
+    <button class="modal-btn btn-primary" onclick="checkEditPw()">✅ प्रवेश करें</button>
+    <button class="btn-link" onclick="closeOv('editPwOv');openForgot()">पासवर्ड भूल गए?</button>
+    <button class="btn-cancel" onclick="closeOv('editPwOv')">रद्द करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADMIN LOGIN ══ -->
+<div class="overlay" id="adminLoginOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">⚙️</span>
+    <div class="modal-title">Admin Panel</div>
+    <div class="modal-sub">एडमिन पैनल के लिए पासवर्ड दर्ज करें</div>
+    <label class="field-label">पासवर्ड</label>
+    <div class="field-wrap">
+      <input class="field-input" type="password" id="adminPwIn" placeholder="••••••" onkeydown="if(event.key==='Enter')checkAdminPw()">
+      <button class="eye-btn" onclick="toggleEye('adminPwIn',this)">👁️</button>
+    </div>
+    <div class="err-msg" id="adminPwErr"></div>
+    <div class="att-msg" id="adminPwAtt"></div>
+    <button class="modal-btn btn-primary" onclick="checkAdminPw()">⚙️ Admin Panel खोलें</button>
+    <button class="btn-link" onclick="closeOv('adminLoginOv');openForgot()">पासवर्ड भूल गए?</button>
+    <button class="btn-cancel" onclick="closeOv('adminLoginOv')">रद्द करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADMIN PANEL ══ -->
+<div class="overlay" id="adminPanelOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <div class="admin-header-row">
+      <div><div class="admin-title-txt">⚙️ Admin Panel</div><div class="admin-title-sub">थाना चरखारी — डेटा प्रबंधन</div></div>
+      <span class="admin-logged">🔓 Logged In</span>
+    </div>
+    <div class="admin-stats-grid" id="adminStats"></div>
+    <hr class="divider">
+    <div class="admin-sec-lbl">✏️ डेटा संपादन</div>
+    <button class="admin-act-btn" id="adminEditBtn" onclick="toggleEditFromAdmin()">✏️ संपादन मोड चालू करें</button>
+    <button class="admin-act-btn" id="adminSaveBtn" onclick="saveFromAdmin()" style="display:none;background:#f0fdf4;border-color:#bbf7d0;color:#15803d">💾 डेटा सहेजें (JSONBin Sync)</button>
+    <hr class="divider">
+    <div class="admin-sec-lbl">🔑 पासवर्ड</div>
+    <button class="admin-act-btn" onclick="closeOv('adminPanelOv');openChangePw()">🔄 पासवर्ड बदलें</button>
+    <button class="admin-act-btn" onclick="closeOv('adminPanelOv');openSetSecurity()">🛡️ सुरक्षा प्रश्न बदलें</button>
+    <hr class="divider">
+    <div class="admin-sec-lbl">📊 डेटा प्रबंधन</div>
+    <button class="admin-act-btn danger" onclick="closeOv('adminPanelOv');openResetConfirm()">🔄 verified शून्य करें (Reset)</button>
+    <button class="admin-act-btn danger" onclick="closeOv('adminPanelOv');openClearJsonBin()">🗑️ JSONBin का पुराना data मिटाएं</button>
+    <button class="admin-logout" onclick="closeOv('adminPanelOv');showToast('✅ Logout हो गया','tsuccess')">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: CHANGE PASSWORD ══ -->
+<div class="overlay" id="changePwOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🔄</span>
+    <div class="modal-title">पासवर्ड बदलें</div>
+    <div class="modal-sub">नया पासवर्ड कम से कम 4 अक्षर का होना चाहिए</div>
+    <label class="field-label">वर्तमान पासवर्ड</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="cpCurrent" placeholder="••••••"><button class="eye-btn" onclick="toggleEye('cpCurrent',this)">👁️</button></div>
+    <label class="field-label">नया पासवर्ड</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="cpNew" placeholder="••••••" oninput="strengthBar('cpNew','pwStr1')"><button class="eye-btn" onclick="toggleEye('cpNew',this)">👁️</button></div>
+    <div class="pw-strength" id="pwStr1"></div>
+    <label class="field-label">दोबारा दर्ज करें</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="cpConfirm" placeholder="••••••"><button class="eye-btn" onclick="toggleEye('cpConfirm',this)">👁️</button></div>
+    <div class="err-msg" id="cpErr"></div>
+    <button class="modal-btn btn-success" onclick="doChangePw()">💾 पासवर्ड सहेजें</button>
+    <button class="btn-cancel" onclick="closeOv('changePwOv');openAdminPanel()">← वापस</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: SECURITY ══ -->
+<div class="overlay" id="setSecOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🛡️</span>
+    <div class="modal-title">सुरक्षा प्रश्न सेट करें</div>
+    <div class="sec-note">🔐 उत्तर SHA-256 encrypted रहेंगे।</div>
+    <label class="field-label">प्रश्न 1</label>
+    <select class="field-select" id="sq1Sel" onchange="document.getElementById('sq1CustWrap').style.display=this.value==='custom'?'block':'none'">
+      <option value="dob">जन्म तिथि (DD/MM/YYYY)</option>
+      <option value="phone">मोबाइल नंबर</option>
+      <option value="mother">माता का नाम</option>
+      <option value="custom">अपना प्रश्न लिखें...</option>
+    </select>
+    <div id="sq1CustWrap" style="display:none;margin-bottom:14px"><input class="field-input" type="text" id="sq1Cust" placeholder="प्रश्न यहाँ लिखें" style="margin:0"></div>
+    <label class="field-label">प्रश्न 1 का उत्तर</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="sq1Ans" placeholder="उत्तर"><button class="eye-btn" onclick="toggleEye('sq1Ans',this)">👁️</button></div>
+    <hr class="divider">
+    <label class="field-label">प्रश्न 2</label>
+    <select class="field-select" id="sq2Sel" onchange="document.getElementById('sq2CustWrap').style.display=this.value==='custom'?'block':'none'">
+      <option value="phone">मोबाइल नंबर</option>
+      <option value="dob">जन्म तिथि (DD/MM/YYYY)</option>
+      <option value="mother">माता का नाम</option>
+      <option value="custom">अपना प्रश्न लिखें...</option>
+    </select>
+    <div id="sq2CustWrap" style="display:none;margin-bottom:14px"><input class="field-input" type="text" id="sq2Cust" placeholder="प्रश्न यहाँ लिखें" style="margin:0"></div>
+    <label class="field-label">प्रश्न 2 का उत्तर</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="sq2Ans" placeholder="उत्तर"><button class="eye-btn" onclick="toggleEye('sq2Ans',this)">👁️</button></div>
+    <div class="err-msg" id="sqErr"></div>
+    <button class="modal-btn btn-success" onclick="doSetSecurity()">🔐 सहेजें</button>
+    <button class="btn-cancel" onclick="closeOv('setSecOv');openAdminPanel()">← वापस</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: FORGOT ══ -->
+<div class="overlay" id="forgotOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🔑</span>
+    <div class="modal-title">पासवर्ड रीसेट</div>
+    <div class="modal-sub">सुरक्षा प्रश्नों के उत्तर दें</div>
+    <label class="field-label" id="fq1Label">प्रश्न 1</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="fa1" placeholder="उत्तर"><button class="eye-btn" onclick="toggleEye('fa1',this)">👁️</button></div>
+    <label class="field-label" id="fq2Label">प्रश्न 2</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="fa2" placeholder="उत्तर"><button class="eye-btn" onclick="toggleEye('fa2',this)">👁️</button></div>
+    <div class="err-msg" id="forgotErr"></div>
+    <button class="modal-btn btn-primary" onclick="checkForgot()">✅ उत्तर जमा करें</button>
+    <button class="btn-cancel" onclick="closeOv('forgotOv')">रद्द करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: NEW PASSWORD ══ -->
+<div class="overlay" id="newPwOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">✅</span>
+    <div class="modal-title">नया पासवर्ड सेट करें</div>
+    <div class="modal-sub">पहचान सत्यापित। अब नया पासवर्ड बनाएं।</div>
+    <label class="field-label">नया पासवर्ड</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="npNew" placeholder="••••••" oninput="strengthBar('npNew','pwStr2')"><button class="eye-btn" onclick="toggleEye('npNew',this)">👁️</button></div>
+    <div class="pw-strength" id="pwStr2"></div>
+    <label class="field-label">दोबारा दर्ज करें</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="npConfirm" placeholder="••••••"><button class="eye-btn" onclick="toggleEye('npConfirm',this)">👁️</button></div>
+    <div class="err-msg" id="npErr"></div>
+    <button class="modal-btn btn-success" onclick="doResetPw()">💾 पासवर्ड सेट करें</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: RESET CONFIRM ══ -->
+<div class="overlay" id="resetConfOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">⚠️</span>
+    <div class="modal-title" style="color:#dc2626">Verified रीसेट करें?</div>
+    <div class="warn-box">⚠️ सभी beat की verified संख्या शून्य हो जाएगी। total/structure ठीक रहेगा।</div>
+    <label class="field-label">पासवर्ड दर्ज करें</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="resetPwIn" placeholder="••••••" onkeydown="if(event.key==='Enter')doReset()"><button class="eye-btn" onclick="toggleEye('resetPwIn',this)">👁️</button></div>
+    <div class="err-msg" id="resetPwErr"></div>
+    <button class="modal-btn btn-danger" onclick="doReset()">🔄 हाँ, Reset करें</button>
+    <button class="btn-cancel" onclick="closeOv('resetConfOv');openAdminPanel()">← वापस</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: CLEAR JSONBIN ══ -->
+<div class="overlay" id="clearJsonBinOv">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <span class="modal-icon">🗑️</span>
+    <div class="modal-title" style="color:#dc2626">JSONBin Data साफ करें</div>
+    <div class="warn-box">🚨 JSONBin का सारा data (total+verified) शून्य हो जाएगा।</div>
+    <label class="field-label">पासवर्ड दर्ज करें</label>
+    <div class="field-wrap"><input class="field-input" type="password" id="clearJbPwIn" placeholder="••••••" onkeydown="if(event.key==='Enter')doClearJsonBin()"><button class="eye-btn" onclick="toggleEye('clearJbPwIn',this)">👁️</button></div>
+    <div class="err-msg" id="clearJbErr"></div>
+    <button class="modal-btn btn-danger" onclick="doClearJsonBin()">🗑️ हाँ, साफ करें</button>
+    <button class="btn-cancel" onclick="closeOv('clearJsonBinOv');openAdminPanel()">← वापस</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+//  SECURITY DEFAULTS
+// ══════════════════════════════════════════
+const DEFAULTS={
+  pwHash:'8f1d857513c617aa479c66f399c8b9c509d7c76aba96a82fc4f2b96b807605c3',
+  sq1Hash:'3158bb379370838573def220138b1721033abfd6c362ca17d9ccfaf239b4e466',
+  sq1Label:'जन्म तिथि (DD/MM/YYYY)',
+  sq2Hash:'caa7d7bd022266e8cb0ab9fb514fd71fcf2473b323d6cb37ea54972d49b3ab51',
+  sq2Label:'मोबाइल नंबर',
+};
+
+// ══════════════════════════════════════════
+//  JSONBIN CONFIG
+// ══════════════════════════════════════════
+const BIN_ID  = '69b97a55aa77b81da9f2489d';
+const API_KEY = '$2a$10$jbXsVWTCdwNckrOTF5lvden8kVNd6OP3GLHe/95/XmZWeYGNaoV1G';
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const HEADERS = {'Content-Type':'application/json','X-Master-Key':API_KEY,'X-Bin-Versioning':'false'};
+
+async function sha256(s){
+  const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+// ══════════════════════════════════════════
+//  CFG (cloud)
+// ══════════════════════════════════════════
+let _cfg=null;
+async function getCfg(){
+  if(_cfg) return _cfg;
+  try{
+    const r=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    if(!r.ok) throw 0;
+    const j=await r.json();
+    if(j.record?.cfg){_cfg={...DEFAULTS,...j.record.cfg};return _cfg;}
+  }catch(e){}
+  _cfg={...DEFAULTS};return _cfg;
+}
+async function saveCfg(c){
+  _cfg=c;
+  try{
+    const r=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    if(!r.ok) throw 0;
+    const j=await r.json();
+    await fetch(BIN_URL,{method:'PUT',headers:HEADERS,body:JSON.stringify({...j.record,cfg:c})});
+  }catch(e){localStorage.setItem('sc_v3',JSON.stringify(c));}
+}
+
+// ══════════════════════════════════════════
+//  BEAT STRUCTURE (sirf halka/beat/officer/villages — NO verified/total hardcoded)
+//  Ye sirf fallback structure hai agar JSONBin bilkul naya ho
+// ══════════════════════════════════════════
+const ORIG=[
+  {halka:'हल्का प्रथम',beat:1,officer:'DINESH SINGH',total:0,verified:0,villages:'Asthon, Bamhauri beldaran'},
+  {halka:'हल्का प्रथम',beat:2,officer:'PANKAJ KUMAR',total:0,verified:0,villages:'Chhedimau, Lohari, Gorkha'},
+  {halka:'हल्का प्रथम',beat:3,officer:'SANDEEP KUMAR',total:0,verified:0,villages:'Rampura kadeem, Akthauha'},
+  {halka:'हल्का द्वितीय',beat:4,officer:'DEEPENDRA SINGH YADAV',total:0,verified:0,villages:'Sudamapuri, Kanera, Chhanikhurd'},
+  {halka:'हल्का द्वितीय',beat:5,officer:'MAHESH PRASHAD',total:0,verified:0,villages:'Bamhauri khurd, Ujnedi, Santoshpura'},
+  {halka:'हल्का द्वितीय',beat:6,officer:'Shyam Kishor',total:0,verified:0,villages:'Anghaura, Ghutvai, Kusarma, Sabua'},
+  {halka:'हल्का तृतीय',beat:7,officer:'AJAY YADAV',total:0,verified:0,villages:'Imlikheda, Sohajna, Bamhauri mathiyai, Bamhauri kalan'},
+  {halka:'हल्का तृतीय',beat:8,officer:'SHYAMU KUMAR',total:0,verified:0,villages:'Bamnetha, Nausara, Bamrara, Roshanpura'},
+  {halka:'हल्का चतुर्थ',beat:9,officer:'NANDLAL SINGH',total:0,verified:0,villages:'Imiliyadang, Satpurwa'},
+  {halka:'हल्का चतुर्थ',beat:10,officer:'NANDLAL SINGH',total:0,verified:0,villages:'Maharajpura, Brajpur, Kumharan dera, Gopalpura'},
+  {halka:'हल्का चतुर्थ',beat:11,officer:'NISHANT KUMAR PATEL',total:0,verified:0,villages:'Bagraun, Kachhiyanpura, Kurauradang, Majhaul, Dyalpura'},
+  {halka:'हल्का चतुर्थ',beat:12,officer:'NISHANT KUMAR PATEL',total:0,verified:0,villages:'Bhaisai, Fatehpur'},
+  {halka:'कस्बा चौकी',beat:13,officer:'PRAMOD KUMAR',total:0,verified:0,villages:'Hathikhana, Bhairoganj, Sadar bajar, Basudev'},
+  {halka:'कस्बा चौकी',beat:14,officer:'ASHISH KUMAR',total:0,verified:0,villages:'Najarbag, Bajariya, Chhailbihari, Rajmandir, Dhanushdhari, Hatwara, Navada, Bhainsasur'},
+  {halka:'कस्बा चौकी',beat:15,officer:'VIVEK / RAJESH KUMAR SINGH',total:0,verified:0,villages:'Amargang, Ghusiyana, Tilwapura, Turkiyana, Kajiyana'},
+  {halka:'कस्बा चौकी',beat:16,officer:'HARISHANKAR MISHRA',total:0,verified:0,villages:'Khandiya, Sauharyanv, Navranga, Lithaura, Roopnagar, Mitlainganj, Jordanganj, Ramnagar'},
+  {halka:'कस्बा चौकी',beat:17,officer:'NARENDRA BABU / DEVISHARAN',total:0,verified:0,villages:'Madvasan, Nayapura, Ravbag, Pathvapura, Mahaveer nagar, Kashiram colony'},
+  {halka:'कस्बा चौकी',beat:18,officer:'LOKENDRA PRATAP / MAHENDRA KUMAR',total:0,verified:0,villages:'Shekhanfatak, Rayanpur, Jyendra nagar, Chintepura, Chhota ramna'},
+  {halka:'चौकी सूपा',beat:19,officer:'RAJARAM PAL',total:0,verified:0,villages:'Supa, Supa khude'},
+  {halka:'चौकी सूपा',beat:20,officer:'RAJARAM PAL',total:0,verified:0,villages:'Tolasoyam, Balchaur'},
+  {halka:'चौकी सूपा',beat:21,officer:'BRAJENDRA SINGH',total:0,verified:0,villages:'Naredi'},
+  {halka:'चौकी सूपा',beat:22,officer:'BRAJENDRA SINGH',total:0,verified:0,villages:'Swasamaaf, Salat, Tapariya'},
+  {halka:'चौकी गौरहारी',beat:23,officer:'RAJIV KUMAR',total:0,verified:0,villages:'Gaurhari'},
+  {halka:'चौकी गौरहारी',beat:24,officer:'RAJIV KUMAR',total:0,verified:0,villages:'Karahra khurd'},
+  {halka:'चौकी गौरहारी',beat:25,officer:'BRIJLAL AHIRWAR',total:0,verified:0,villages:'Baphretha'},
+  {halka:'चौकी गौरहारी',beat:26,officer:'BRIJLAL AHIRWAR',total:0,verified:0,villages:'Dhanavan'},
+  {halka:'चौकी गौरहारी',beat:27,officer:'GYAN SINGH',total:0,verified:0,villages:'Gudha'},
+  {halka:'चौकी गौरहारी',beat:28,officer:'GYAN SINGH',total:0,verified:0,villages:'Bhatevra kalan'},
+  {halka:'चौकी रिवई',beat:29,officer:'DAYARAM KUSHWAHA',total:0,verified:0,villages:'Rewai'},
+  {halka:'चौकी रिवई',beat:30,officer:'DAYARAM KUSHWAHA',total:0,verified:0,villages:'Keeratpura, Kakun, Natarra'},
+  {halka:'चौकी रिवई',beat:31,officer:'RAJKUMAR YADAV',total:0,verified:0,villages:'Panchampura, Jataura'},
+  {halka:'चौकी रिवई',beat:32,officer:'RAHUL YADAV',total:0,verified:0,villages:'Rihuniya, Baihari, Sijaura'},
+];
+
+let data=[],editMode=false,editAtt=0,adminAtt=0;
+const MAX_ATT=5;
+
+// ══════════════════════════════════════════
+//  LOADING / ERROR UI
+// ══════════════════════════════════════════
+function showLoading(){
+  document.getElementById('halkaContainer').innerHTML=
+    '<div style="text-align:center;padding:48px 20px;color:#94a3b8;font-size:14px;font-family:Tiro Devanagari Hindi,serif">☁️ JSONBin से डेटा लोड हो रहा है...</div>';
+}
+function showLoadError(msg){
+  document.getElementById('halkaContainer').innerHTML=
+    `<div style="text-align:center;padding:40px 20px;color:#dc2626;font-size:13px;line-height:1.8;font-family:Tiro Devanagari Hindi,serif">
+      ❌ <b>${msg}</b><br><br>
+      <button onclick="loadDataFromBin()" style="background:#1a56db;color:#fff;border:none;padding:10px 22px;border-radius:10px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;font-weight:600">🔄 दोबारा कोशिश करें</button>
+    </div>`;
+}
+
+// ══════════════════════════════════════════
+//  DATETIME
+// ══════════════════════════════════════════
+function fmtDT(iso){
+  if(!iso) return 'अज्ञात';
+  const d=new Date(iso);
+  const dd=String(d.getDate()).padStart(2,'0');
+  const mm=String(d.getMonth()+1).padStart(2,'0');
+  const yyyy=d.getFullYear();
+  const hh=String(d.getHours()).padStart(2,'0');
+  const min=String(d.getMinutes()).padStart(2,'0');
+  return `${dd}-${mm}-${yyyy} · ${hh}:${min}`;
+}
+
+// ══════════════════════════════════════════
+//  UPDATE HEADER + FOOTER FROM JSON DATA
+// ══════════════════════════════════════════
+function updateHeaderFooter(iso){
+  const t=data.reduce((s,r)=>s+r.total,0);
+  const v=data.reduce((s,r)=>s+r.verified,0);
+  const p=t-v;
+  const pc=t===0?'0':Math.round(v/t*10000)/100;
+  const dt=fmtDT(iso);
+
+  // Header strip
+  document.getElementById('hdr-date').textContent=dt;
+  document.getElementById('hdr-pct-strip').textContent=pc+'%';
+
+  // Footer
+  document.getElementById('ftr-sync').textContent='अंतिम sync: '+dt;
+  document.getElementById('ftr-total').textContent=t;
+  document.getElementById('ftr-ver').textContent=v;
+  document.getElementById('ftr-pend').textContent=p;
+  document.getElementById('ftr-pct').textContent=pc+'%';
+  document.getElementById('ftr-bottom').textContent=
+    `थाना चरखारी · जनपद महोबा · UP Police · कुल ${t} · सत्यापित ${v} · शेष ${p}`;
+}
+
+// ══════════════════════════════════════════
+//  JSONBIN — LOAD
+// ══════════════════════════════════════════
+async function loadDataFromBin(){
+  showLoading();
+  try{
+    const res=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const json=await res.json();
+    const saved=json.record?.beats;
+    const lastUp=json.record?.lastUpdated;
+    if(json.record?.cfg) _cfg={...DEFAULTS,...json.record.cfg};
+
+    if(saved && Array.isArray(saved) && saved.length>0){
+      data=saved;
+      updateHeaderFooter(lastUp||null);
+      renderAll();
+    } else {
+      data=ORIG.map(d=>({...d}));
+      await saveDataToBin(false);
+      updateHeaderFooter(new Date().toISOString());
+      renderAll();
+      showToast('☁️ JSONBin खाली था — ढांचा तैयार। Admin से data दर्ज करें।','tinfo');
+    }
+  }catch(e){
+    console.warn('Load error:',e);
+    showLoadError('JSONBin से data नहीं मिला।<br>Internet / API Key जाँचें।');
+    document.getElementById('hdr-date').textContent='Error';
+    return;
+  }
+  // Auto-refresh every 15s
+  if(!window._arf){
+    window._arf=true;
+    setInterval(async()=>{
+      if(editMode) return;
+      try{
+        const r=await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+        if(!r.ok) return;
+        const j=await r.json();
+        const sv=j.record?.beats;
+        const lu=j.record?.lastUpdated;
+        if(sv && sv.length>0){data=sv;renderAll();updateHeaderFooter(lu||null);}
+      }catch(e){}
+    },15000);
+  }
+}
+
+// ══════════════════════════════════════════
+//  JSONBIN — SAVE
+// ══════════════════════════════════════════
+async function saveDataToBin(msg=true){
+  try{
+    const now=new Date().toISOString();
+    const cfgS=_cfg||{...DEFAULTS};
+    const res=await fetch(BIN_URL,{
+      method:'PUT',headers:HEADERS,
+      body:JSON.stringify({beats:data,lastUpdated:now,cfg:cfgS})
+    });
+    if(!res.ok) throw new Error('save '+res.status);
+    updateHeaderFooter(now);
+    if(msg) showToast('☁️ सभी Devices पर Sync!','tsuccess');
+  }catch(e){
+    if(msg) showToast('❌ Save नहीं हुआ — Internet जाँचें','terror');
+  }
+}
+
+// ══════════════════════════════════════════
+//  JSONBIN — RESET (verified=0)
+// ══════════════════════════════════════════
+async function resetDataInBin(){
+  data=data.map(d=>({...d,verified:0}));
+  await saveDataToBin(false);
+  showToast('🔄 सभी verified शून्य। Devices sync।','tinfo');
+}
+
+// ══════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════
+function pct(v,t){return t===0?0:Math.round(v/t*10000)/100;}
+
+function renderHalka(){
+  const grp={},ord=[];
+  data.forEach(r=>{if(!grp[r.halka]){grp[r.halka]=[];ord.push(r.halka);}grp[r.halka].push(r);});
+  let html='';
+  ord.forEach(hn=>{
+    const rows=grp[hn];
+    const hT=rows.reduce((s,r)=>s+r.total,0);
+    const hV=rows.reduce((s,r)=>s+r.verified,0);
+    const hP=hT-hV,hPct=pct(hV,hT);
+    const icon=hn.startsWith('हल्का')?'📍':'🏢';
+    html+=`<div class="halka-sec">
+      <div class="halka-hdr open" onclick="toggleSec(this)">
+        <div class="hh-left">
+          <div class="hh-icon">${icon}</div>
+          <span class="hh-name">${hn}</span>
+        </div>
+        <div class="hh-right">
+          <div class="hh-badges">
+            <span class="bdg bdg-total">${hT}</span>
+            <span class="bdg bdg-ok">${hV}✓</span>
+            ${hP>0?`<span class="bdg bdg-pend">${hP}⚠</span>`:''}
+            <span class="bdg bdg-pct">${hPct}%</span>
+          </div>
+          <span class="hh-arrow">▼</span>
+        </div>
+      </div>
+      <div class="halka-body" style="max-height:4000px">
+        <div class="beat-list">`;
+
+    rows.forEach(r=>{
+      const p=r.total-r.verified, pc2=pct(r.verified,r.total);
+      const cls=p===0?'done':p>=10?'pend-high':'pend';
+      const villages=r.villages.split(',').map(v=>`<span>${v.trim()}</span>`).join('');
+      html+=`<div class="beat-card ${cls}">
+        <div class="beat-top">
+          <div class="beat-left">
+            <div class="bc-beat">बीट ${r.beat}</div>
+            <div class="bc-officer">${r.officer}</div>
+            <div class="bc-halka">${r.halka}</div>
+          </div>
+          <div class="beat-right">
+            ${p===0
+              ?`<div class="bc-done-wrap"><div class="bc-done-icon">✅</div><div class="bc-done-pct">${pc2}%</div></div>`
+              :`<div class="bc-pend-wrap"><div class="bc-pend-num">${p}</div><div class="bc-pct-lbl">${pc2}%</div></div>`
+            }
+          </div>
+        </div>
+        <div class="beat-bar-bg"><div class="beat-bar" style="width:${pc2}%"></div></div>
+        <div class="beat-stats">
+          <span class="bs-item total">📌 कुल: <b>${r.total}</b></span>
+          <span class="bs-item ver">✅ सत्यापित: <b>${r.verified}</b></span>
+          <span class="bs-item ${p>=10?'pend-h':'pend'}">⚠️ शेष: <b>${p}</b></span>
+        </div>
+        <div class="bc-villages">${villages}</div>
+        <div class="edit-inputs">
+          <div class="edit-field"><label>कुल</label><input class="edit-inp" type="number" min="0" max="999" value="${r.total}" onchange="updBeat(${r.beat},'total',this.value)"></div>
+          <div class="edit-field"><label>सत्यापित</label><input class="edit-inp" type="number" min="0" max="999" value="${r.verified}" onchange="updBeat(${r.beat},'verified',this.value)"></div>
+        </div>
+      </div>`;
+    });
+
+    html+=`</div>
+        <div class="subtotal-row">
+          <span class="sub-name">${icon} ${hn}</span>
+          <span>कुल <b>${hT}</b> &nbsp;·&nbsp; ✅ <b>${hV}</b> &nbsp;·&nbsp; ⚠️ <b>${hP}</b> &nbsp;·&nbsp; 📊 <b>${hPct}%</b></span>
+        </div>
+      </div></div>`;
+  });
+  document.getElementById('halkaContainer').innerHTML=html;
+}
+
+function renderPending(){
+  const pends=data.filter(r=>(r.total-r.verified)>0).sort((a,b)=>(b.total-b.verified)-(a.total-a.verified));
+  const tp=pends.reduce((s,r)=>s+(r.total-r.verified),0);
+  document.getElementById('pendBadge').textContent=tp+' शेष';
+  if(!pends.length){
+    document.getElementById('pendingContainer').innerHTML=
+      '<div class="no-pending">🎉 बधाई! सभी बीट का सत्यापन पूर्ण है।</div>';
+    return;
+  }
+  const high=pends.filter(r=>(r.total-r.verified)>=10);
+  const med=pends.filter(r=>{const p=r.total-r.verified;return p>=5&&p<10;});
+  const low=pends.filter(r=>(r.total-r.verified)<5);
+
+  function card(r,cls){
+    const p=r.total-r.verified,pc2=pct(r.verified,r.total);
+    return `<div class="pcard ${cls}">
+      <div class="pcard-top">
+        <div><div class="pcard-beat">${r.halka} — बीट ${r.beat}</div><div class="pcard-num-badge">👮 ${r.officer}</div></div>
+        <div class="pcard-big">${p}</div>
+      </div>
+      <div class="pcard-bar-bg"><div class="pcard-bar" style="width:${pc2}%"></div></div>
+      <div class="pcard-stats"><span>कुल: ${r.total}</span><span>✅ ${r.verified}</span><span>${pc2}%</span></div>
+      <div class="pcard-villages">${r.villages}</div>
+    </div>`;
+  }
+
+  let html='<div style="padding:8px 10px 10px">';
+  if(high.length) html+=`<div class="priority-sec"><div class="priority-lbl high">🔴 उच्च प्राथमिकता (10+)</div>${high.map(r=>card(r,'high')).join('')}</div>`;
+  if(med.length)  html+=`<div class="priority-sec"><div class="priority-lbl med">🟡 मध्यम (5-9)</div>${med.map(r=>card(r,'med')).join('')}</div>`;
+  if(low.length)  html+=`<div class="priority-sec"><div class="priority-lbl low">🟢 सामान्य (1-4)</div>${low.map(r=>card(r,'low')).join('')}</div>`;
+  html+='</div>';
+  document.getElementById('pendingContainer').innerHTML=html;
+}
+
+function updateSummary(){
+  const t=data.reduce((s,r)=>s+r.total,0),v=data.reduce((s,r)=>s+r.verified,0);
+  const p=t-v,pc2=pct(v,t);
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+  set('s-total',t); set('s-verified',v); set('s-pending',p); set('s-pct',pc2+'%');
+}
+
+function renderAll(){renderHalka();renderPending();updateSummary();}
+
+function updBeat(b,f,v){
+  const i=data.findIndex(r=>r.beat===b);if(i<0)return;
+  let val=parseInt(v,10);if(isNaN(val)||val<0)val=0;
+  if(f==='verified'&&val>data[i].total)val=data[i].total;
+  if(f==='total'&&val<data[i].verified)data[i].verified=val;
+  data[i][f]=val;updateSummary();
+}
+
+// ══════════════════════════════════════════
+//  EDIT MODE
+// ══════════════════════════════════════════
+function setEditMode(on){
+  editMode=on;
+  document.getElementById('mainPanel').classList.toggle('edit-mode',on);
+  document.getElementById('editModeBar').classList.toggle('show',on);
+  document.getElementById('adminEditBtn').style.display=on?'none':'flex';
+  document.getElementById('adminSaveBtn').style.display=on?'flex':'none';
+}
+function toggleEditFromAdmin(){closeOv('adminPanelOv');openOv('editPwOv');setTimeout(()=>document.getElementById('editPwIn').focus(),300);}
+async function saveFromAdmin(){await saveDataToBin(true);renderAll();setEditMode(false);closeOv('adminPanelOv');}
+
+// ══════════════════════════════════════════
+//  ADMIN / AUTH
+// ══════════════════════════════════════════
+function openAdminLogin(){
+  ['adminPwIn'].forEach(id=>document.getElementById(id).value='');
+  ['adminPwErr','adminPwAtt'].forEach(id=>document.getElementById(id).textContent='');
+  openOv('adminLoginOv');setTimeout(()=>document.getElementById('adminPwIn').focus(),300);
+}
+async function checkAdminPw(){
+  const val=document.getElementById('adminPwIn').value.trim();
+  const h=await sha256(val),cfg=await getCfg();
+  if(h===cfg.pwHash){adminAtt=0;closeOv('adminLoginOv');openAdminPanel();}
+  else{
+    adminAtt++;
+    const inp=document.getElementById('adminPwIn');
+    inp.classList.add('wrong');inp.value='';
+    setTimeout(()=>inp.classList.remove('wrong'),400);
+    document.getElementById('adminPwErr').textContent='❌ गलत पासवर्ड!';
+    const rem=MAX_ATT-adminAtt;
+    if(rem>0) document.getElementById('adminPwAtt').textContent=rem+' प्रयास शेष';
+    else{document.getElementById('adminPwErr').textContent='🚫 बहुत अधिक गलत प्रयास।';setTimeout(()=>closeOv('adminLoginOv'),1800);}
+  }
+}
+function openAdminPanel(){
+  const t=data.reduce((s,r)=>s+r.total,0),v=data.reduce((s,r)=>s+r.verified,0);
+  const p=t-v,pc2=pct(v,t);
+  document.getElementById('adminStats').innerHTML=`
+    <div class="as-box"><div class="as-num">${t}</div><div class="as-lbl">कुल अपराधी</div></div>
+    <div class="as-box"><div class="as-num" style="color:#16a34a">${v}</div><div class="as-lbl">सत्यापित</div></div>
+    <div class="as-box"><div class="as-num" style="color:#d97706">${p}</div><div class="as-lbl">शेष</div></div>
+    <div class="as-box"><div class="as-num" style="color:#1a56db">${pc2}%</div><div class="as-lbl">प्रतिशत</div></div>`;
+  document.getElementById('adminEditBtn').style.display=editMode?'none':'flex';
+  document.getElementById('adminSaveBtn').style.display=editMode?'flex':'none';
+  openOv('adminPanelOv');
+}
+
+async function checkEditPw(){
+  const val=document.getElementById('editPwIn').value.trim();
+  const h=await sha256(val),cfg=await getCfg();
+  if(h===cfg.pwHash){editAtt=0;closeOv('editPwOv');setEditMode(true);showToast('✏️ संपादन मोड चालू','tinfo');}
+  else{
+    editAtt++;
+    const inp=document.getElementById('editPwIn');
+    inp.classList.add('wrong');inp.value='';
+    setTimeout(()=>inp.classList.remove('wrong'),400);
+    document.getElementById('editPwErr').textContent='❌ गलत पासवर्ड!';
+    const rem=MAX_ATT-editAtt;
+    if(rem>0) document.getElementById('editPwAtt').textContent=rem+' प्रयास शेष';
+    else{document.getElementById('editPwErr').textContent='🚫 बहुत अधिक गलत प्रयास।';setTimeout(()=>closeOv('editPwOv'),1800);}
+  }
+}
+
+function openChangePw(){['cpCurrent','cpNew','cpConfirm'].forEach(id=>document.getElementById(id).value='');document.getElementById('cpErr').textContent='';openOv('changePwOv');}
+async function doChangePw(){
+  const cur=document.getElementById('cpCurrent').value.trim();
+  const nw=document.getElementById('cpNew').value.trim();
+  const conf=document.getElementById('cpConfirm').value.trim();
+  const err=document.getElementById('cpErr');
+  if(!cur||!nw||!conf){err.textContent='❌ सभी फ़ील्ड भरें।';return;}
+  if(nw.length<4){err.textContent='❌ कम से कम 4 अक्षर।';return;}
+  if(nw!==conf){err.textContent='❌ पासवर्ड मेल नहीं।';return;}
+  const cfg=await getCfg();
+  if(await sha256(cur)!==cfg.pwHash){
+    document.getElementById('cpCurrent').classList.add('wrong');
+    setTimeout(()=>document.getElementById('cpCurrent').classList.remove('wrong'),400);
+    err.textContent='❌ वर्तमान पासवर्ड गलत।';return;
+  }
+  cfg.pwHash=await sha256(nw);await saveCfg(cfg);
+  closeOv('changePwOv');showToast('✅ पासवर्ड बदल गया!','tsuccess');
+}
+
+function openSetSecurity(){['sq1Ans','sq2Ans'].forEach(id=>document.getElementById(id).value='');document.getElementById('sqErr').textContent='';openOv('setSecOv');}
+async function doSetSecurity(){
+  const a1=document.getElementById('sq1Ans').value.trim();
+  const a2=document.getElementById('sq2Ans').value.trim();
+  const err=document.getElementById('sqErr');
+  if(!a1||!a2){err.textContent='❌ दोनों उत्तर दर्ज करें।';return;}
+  const sel1=document.getElementById('sq1Sel'),sel2=document.getElementById('sq2Sel');
+  const l1=sel1.value==='custom'?document.getElementById('sq1Cust').value.trim():sel1.options[sel1.selectedIndex].text;
+  const l2=sel2.value==='custom'?document.getElementById('sq2Cust').value.trim():sel2.options[sel2.selectedIndex].text;
+  if(!l1||!l2){err.textContent='❌ प्रश्न खाली नहीं।';return;}
+  const cfg=await getCfg();
+  cfg.sq1Hash=await sha256(a1.toLowerCase());cfg.sq1Label=l1;
+  cfg.sq2Hash=await sha256(a2.toLowerCase());cfg.sq2Label=l2;
+  await saveCfg(cfg);closeOv('setSecOv');showToast('🔐 सुरक्षा प्रश्न सहेजे गए!','tsuccess');
+}
+
+async function openForgot(){
+  const cfg=await getCfg();
+  document.getElementById('fq1Label').textContent='प्रश्न 1: '+cfg.sq1Label;
+  document.getElementById('fq2Label').textContent='प्रश्न 2: '+cfg.sq2Label;
+  ['fa1','fa2'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('forgotErr').textContent='';
+  openOv('forgotOv');
+}
+async function checkForgot(){
+  const a1=document.getElementById('fa1').value.trim().toLowerCase();
+  const a2=document.getElementById('fa2').value.trim().toLowerCase();
+  const err=document.getElementById('forgotErr');
+  if(!a1||!a2){err.textContent='❌ दोनों उत्तर दर्ज करें।';return;}
+  const cfg=await getCfg();
+  if(await sha256(a1)===cfg.sq1Hash && await sha256(a2)===cfg.sq2Hash){
+    closeOv('forgotOv');
+    ['npNew','npConfirm'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('npErr').textContent='';
+    openOv('newPwOv');
+  }else{
+    ['fa1','fa2'].forEach(id=>{document.getElementById(id).classList.add('wrong');document.getElementById(id).value='';});
+    setTimeout(()=>['fa1','fa2'].forEach(id=>document.getElementById(id).classList.remove('wrong')),500);
+    err.textContent='❌ एक या दोनों उत्तर गलत।';
+  }
+}
+async function doResetPw(){
+  const nw=document.getElementById('npNew').value.trim();
+  const conf=document.getElementById('npConfirm').value.trim();
+  const err=document.getElementById('npErr');
+  if(!nw||!conf){err.textContent='❌ सभी फ़ील्ड भरें।';return;}
+  if(nw.length<4){err.textContent='❌ कम से कम 4 अक्षर।';return;}
+  if(nw!==conf){err.textContent='❌ पासवर्ड मेल नहीं।';return;}
+  const cfg=await getCfg();cfg.pwHash=await sha256(nw);await saveCfg(cfg);
+  closeOv('newPwOv');showToast('✅ नया पासवर्ड सेट!','tsuccess');
+}
+
+function openResetConfirm(){document.getElementById('resetPwIn').value='';document.getElementById('resetPwErr').textContent='';openOv('resetConfOv');setTimeout(()=>document.getElementById('resetPwIn').focus(),300);}
+async function doReset(){
+  const val=document.getElementById('resetPwIn').value.trim();
+  const err=document.getElementById('resetPwErr');
+  if(!val){err.textContent='❌ पासवर्ड दर्ज करें।';return;}
+  const h=await sha256(val),cfg=await getCfg();
+  if(h!==cfg.pwHash){
+    document.getElementById('resetPwIn').classList.add('wrong');document.getElementById('resetPwIn').value='';
+    setTimeout(()=>document.getElementById('resetPwIn').classList.remove('wrong'),400);
+    err.textContent='❌ गलत पासवर्ड!';return;
+  }
+  closeOv('resetConfOv');setEditMode(false);
+  await resetDataInBin();renderAll();
+}
+
+function openClearJsonBin(){document.getElementById('clearJbPwIn').value='';document.getElementById('clearJbErr').textContent='';openOv('clearJsonBinOv');setTimeout(()=>document.getElementById('clearJbPwIn').focus(),300);}
+async function doClearJsonBin(){
+  const val=document.getElementById('clearJbPwIn').value.trim();
+  const err=document.getElementById('clearJbErr');
+  if(!val){err.textContent='❌ पासवर्ड दर्ज करें।';return;}
+  const h=await sha256(val),cfg=await getCfg();
+  if(h!==cfg.pwHash){
+    document.getElementById('clearJbPwIn').classList.add('wrong');document.getElementById('clearJbPwIn').value='';
+    setTimeout(()=>document.getElementById('clearJbPwIn').classList.remove('wrong'),400);
+    err.textContent='❌ गलत पासवर्ड!';return;
+  }
+  data=ORIG.map(d=>({...d,total:0,verified:0}));
+  closeOv('clearJsonBinOv');setEditMode(false);
+  await saveDataToBin(false);renderAll();
+  showToast('🗑️ JSONBin साफ हो गया।','terror');
+}
+
+// ══════════════════════════════════════════
+//  UI HELPERS
+// ══════════════════════════════════════════
+function openOv(id){document.getElementById(id).classList.add('show');}
+function closeOv(id){document.getElementById(id).classList.remove('show');}
+function toggleEye(id,btn){
+  const i=document.getElementById(id);
+  i.type=i.type==='password'?'text':'password';
+  btn.textContent=i.type==='password'?'👁️':'🙈';
+}
+function toggleSec(hdr){
+  const body=hdr.nextElementSibling,open=hdr.classList.contains('open');
+  body.style.maxHeight=open?'0':body.scrollHeight+500+'px';
+  hdr.classList.toggle('open',!open);
+}
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+function strengthBar(iid,bid){
+  const v=document.getElementById(iid).value;
+  const bar=document.getElementById(bid);
+  const cols=['#e2e8f0','#ef4444','#f97316','#eab308','#22c55e','#16a34a'];
+  const ws=['0%','20%','40%','60%','80%','100%'];
+  let s=0;
+  if(v.length>=4)s++;if(v.length>=8)s++;
+  if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;
+  bar.style.width=ws[s];bar.style.background=cols[s];
+}
+let toastT;
+function showToast(msg,type='tsuccess'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200);
+}
+document.querySelectorAll('.overlay').forEach(ov=>{
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('show');});
+});
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+loadDataFromBin();
+</script>
+</body>
+</html>
